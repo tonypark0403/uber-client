@@ -12,6 +12,8 @@
     "react-apollo": "^3.1.5",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
+    "styled-components": "^5.1.0",
+    "styled-reset": "^4.1.4",
     "tslint-react": "^5.0.0"
   },
   "devDependencies": {
@@ -19,6 +21,7 @@
     "@types/node": "^13.13.4",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
+    "@types/styled-components": "^5.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2",
     "tslint": "^6.1.2",
