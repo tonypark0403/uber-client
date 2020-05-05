@@ -4,6 +4,7 @@ import BackArrow from '../../Components/BackArrow';
 import Input from '../../Components/Input';
 import countries from '../../Utils/countries';
 import styled from '../../Components/Style/typed-components';
+import Button from '../../Components/Button';
 
 const Container = styled.div`
   margin-top: 30px;
@@ -38,21 +39,6 @@ const CountryOption = styled.option``;
 
 const Form = styled.form``;
 
-const Button = styled.button`
-  box-shadow: 0 18px 35px rgba(50, 50, 93, 0.1), 0 8px 15px rgba(0, 0, 0, 0.07);
-  background-color: black;
-  color: white;
-  padding: 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 50px;
-  right: 50px;
-  cursor: pointer;
-`;
-
 interface IProps {
   countryCode: string;
   phoneNumber: string;
@@ -60,6 +46,7 @@ interface IProps {
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  loading: boolean;
 }
 
 const PhoneLoginPresenter: FC<IProps> = ({
@@ -67,6 +54,7 @@ const PhoneLoginPresenter: FC<IProps> = ({
   phoneNumber,
   onInputChange,
   onSubmit,
+  loading,
 }) => (
   <Container>
     <Helmet>
@@ -91,7 +79,7 @@ const PhoneLoginPresenter: FC<IProps> = ({
         name={'phoneNumber'}
         onChange={onInputChange}
       />
-      <Button>
+      <Button disabled={loading}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           width='24'

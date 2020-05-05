@@ -5,13 +5,18 @@ import AppPresenter from './AppPresenter';
 import { ThemeProvider } from '../Style/typed-components';
 import theme from '../Style/theme';
 import GlobalStyle from '../Style/GlobalStyle';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const AppContainer = ({ data }: { data?: any }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <AppPresenter isLoggedIn={data.auth.isLoggedIn} />
-    </ThemeProvider>
+    <React.Fragment>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <AppPresenter isLoggedIn={data.auth.isLoggedIn} />
+      </ThemeProvider>
+      <ToastContainer draggable={true} position={'bottom-center'} />
+    </React.Fragment>
   );
 };
 
