@@ -13,10 +13,20 @@ interface IState {
 const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
   const [countryCode, setCountryCode] = useState('+1');
   const [phoneNumber, setPhoneNumber] = useState('6471231234');
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  const [phoneSignIn, { data }] = useMutation(PHONE_SIGN_IN);
+  const [PhoneSignInMutation, { data, loading }] = useMutation(PHONE_SIGN_IN, {
+    variables: { phoneNumber: `${countryCode}${phoneNumber}` },
+    update: (_, { data: { StartPhoneVerification } }) => {
+      const { ok, error } = StartPhoneVerification;
+      if (error) {
+        toast.error(error);
+      }
+    },
+  });
+  // const [PhoneSignInMutation, { data, loading }] = useMutation(PHONE_SIGN_IN);
   console.log('phoneSignIn:', data);
+  // const [PhoneSignInMutation] = useMutation(PHONE_SIGN_IN);
 
   const onInputChange: ChangeEventHandler<
     HTMLInputElement | HTMLSelectElement
@@ -43,16 +53,24 @@ const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
     if (!isValid) {
       toast.error(`Please write a valid phone number`);
     } else {
-      setLoading(true);
-      const {
-        data: { StartPhoneVerification },
-      } = await phoneSignIn({
-        variables: { phoneNumber: `${countryCode}${phoneNumber}` },
-      });
-      setLoading(false);
-      console.log(StartPhoneVerification);
+      // setLoading(true);
+      await PhoneSignInMutation();
+      // const {
+      //   data: { StartPhoneVerification },
+      // } = await PhoneSignInMutation({
+      //   variables: { phoneNumber: `${countryCode}${phoneNumber}` },
+      //   update: (_, { data: { StartPhoneVerification } }) => {
+      //     const { ok, error } = StartPhoneVerification;
+      //     if (error) {
+      //       toast.error(error);
+      //     }
+      //   },
+      // });
+      // setLoading(false);
+      console.log('From phoneSignIn: ', data);
     }
   };
+
   return (
     <PhoneLoginPresenter
       countryCode={countryCode}
