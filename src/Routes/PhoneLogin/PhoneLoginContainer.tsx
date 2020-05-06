@@ -22,6 +22,7 @@ const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
       if (error) {
         toast.error(error);
       }
+      console.log(ok);
     },
   });
   // const [PhoneSignInMutation, { data, loading }] = useMutation(PHONE_SIGN_IN);
