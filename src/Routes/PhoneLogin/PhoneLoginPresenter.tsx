@@ -2,7 +2,7 @@ import React, { FC, ChangeEvent, FormEvent } from 'react';
 import { Helmet } from 'react-helmet';
 import BackArrow from '../../Components/BackArrow';
 import Input from '../../Components/Input';
-import countries from '../../Utils/countries';
+import countries from '../../utils/countries';
 import styled from '../../Components/Style/typed-components';
 import Button from '../../Components/Button';
 

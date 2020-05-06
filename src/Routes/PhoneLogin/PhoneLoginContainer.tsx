@@ -2,8 +2,8 @@ import React, { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import PhoneLoginPresenter from './PhoneLoginPresenter';
 import { RouteComponentProps } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { PHONE_SIGN_IN } from './PhoneLoginQueries';
-import { useMutation, Mutation } from 'react-apollo';
+import { PHONE_SIGN_IN } from './PhoneLoginQueries.queries';
+import { useMutation } from 'react-apollo';
 
 interface IState {
   countryCode: string;
@@ -16,6 +16,7 @@ const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
   const [loading, setLoading] = useState(false);
 
   const [phoneSignIn, { data }] = useMutation(PHONE_SIGN_IN);
+  console.log('phoneSignIn:', data);
 
   const onInputChange: ChangeEventHandler<
     HTMLInputElement | HTMLSelectElement
