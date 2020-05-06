@@ -1,34 +1,34 @@
-import React, { FC } from 'react';
+import React from 'react';
 import styled from '../Style/typed-components';
 
-const Container = styled.button`
-  box-shadow: 0 18px 35px rgba(50, 50, 93, 0.1), 0 8px 15px rgba(0, 0, 0, 0.07);
+const Container = styled.input`
+  width: 100%;
   background-color: black;
   color: white;
-  padding: 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 50px;
-  right: 50px;
+  text-transform: uppercase;
+  padding: 15px 0;
+  font-size: 16px;
+  border: 0;
   cursor: pointer;
+  font-weight: 500;
+  text-align: center;
+  &:active,
+  &:focus {
+    outline: none;
+  }
   &:disabled {
-    color: grey;
-    opacity: 0.7;
-    cursor: default;
+    opacity: 0.8;
   }
 `;
 
 interface IProps {
+  value: string;
+  onClick: any;
   disabled?: boolean;
-  children: any;
 }
 
-const Button: FC<IProps> = ({ disabled = false, children }) => {
-  console.log('disabled:', disabled);
-  return <Container disabled={disabled}>{children}</Container>;
-};
+const Button: React.FC<IProps> = ({ value, onClick, disabled = false }) => (
+  <Container value={value} disabled={false} onClick={onClick} />
+);
 
 export default Button;

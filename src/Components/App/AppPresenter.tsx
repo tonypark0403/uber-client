@@ -12,6 +12,7 @@ import Ride from '../../Routes/Ride';
 import Settings from '../../Routes/Settings';
 import SocialLogin from '../../Routes/SocialLogin';
 import VerifyPhone from '../../Routes/VerifyPhone';
+import routes from '../../config/routes';
 
 interface IProps {
   isLoggedIn: boolean;
@@ -23,25 +24,25 @@ const AppPresenter: FC<IProps> = ({ isLoggedIn }) => (
   </BrowserRouter>
 );
 
-const LoggedOutRoutes: React.SFC = () => (
+const LoggedOutRoutes: React.FC = () => (
   <Switch>
-    <Route path={'/'} exact={true} component={OutHome} />
-    <Route path={'/phone-login'} component={PhoneLogin} />
-    <Route path={'/verify-phone/:number'} component={VerifyPhone} />
-    <Route path={'/social-login'} component={SocialLogin} />
+    <Route path={routes.home} exact={true} component={OutHome} />
+    <Route path={routes.phoneLogin} component={PhoneLogin} />
+    <Route path={routes.verifyPhone} component={VerifyPhone} />
+    <Route path={routes.socialLogin} component={SocialLogin} />
     <Redirect from={'*'} to={'/'} />
   </Switch>
 );
 
-const LoggedInRoutes: React.SFC = () => (
+const LoggedInRoutes: React.FC = () => (
   <Switch>
-    <Route path={'/'} exact={true} component={Home} />
-    <Route path={'/ride'} exact={true} component={Ride} />
-    <Route path={'/edit-account'} exact={true} component={EditAccount} />
-    <Route path={'/settings'} exact={true} component={Settings} />
-    <Route path={'/places'} exact={true} component={Places} />
-    <Route path={'/add-place'} exact={true} component={AddPlace} />
-    <Route path={'/find-address'} exact={true} component={FindAddress} />
+    <Route path={routes.home} exact={true} component={Home} />
+    <Route path={routes.ride} exact={true} component={Ride} />
+    <Route path={routes.editAccount} exact={true} component={EditAccount} />
+    <Route path={routes.settings} exact={true} component={Settings} />
+    <Route path={routes.places} exact={true} component={Places} />
+    <Route path={routes.addPlace} exact={true} component={AddPlace} />
+    <Route path={routes.findAddress} exact={true} component={FindAddress} />
     <Redirect from={'*'} to={'/'} />
   </Switch>
 );

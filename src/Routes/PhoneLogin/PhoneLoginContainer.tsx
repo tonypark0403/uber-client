@@ -13,21 +13,20 @@ interface IState {
 const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
   const [countryCode, setCountryCode] = useState('+1');
   const [phoneNumber, setPhoneNumber] = useState('6471231234');
-  // const [loading, setLoading] = useState(false);
 
   const [PhoneSignInMutation, { data, loading }] = useMutation(PHONE_SIGN_IN, {
     variables: { phoneNumber: `${countryCode}${phoneNumber}` },
-    update: (_, { data: { StartPhoneVerification } }) => {
-      const { ok, error } = StartPhoneVerification;
-      if (error) {
-        toast.error(error);
+    onCompleted: (data) => {
+      const { StartPhoneVerification } = data;
+      if (StartPhoneVerification) {
+        if (StartPhoneVerification.ok) {
+        } else {
+          toast.error(StartPhoneVerification.error);
+        }
       }
-      console.log(ok);
     },
   });
-  // const [PhoneSignInMutation, { data, loading }] = useMutation(PHONE_SIGN_IN);
   console.log('phoneSignIn:', data);
-  // const [PhoneSignInMutation] = useMutation(PHONE_SIGN_IN);
 
   const onInputChange: ChangeEventHandler<
     HTMLInputElement | HTMLSelectElement
@@ -44,31 +43,19 @@ const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
 
   const onSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
-    // tslint:disable-next-line
-    // console.log(countryCode, phoneNumber);
-    const isValid: boolean = /^\+[1-9]{1}[0-9]{7,11}$/.test(
-      `${countryCode}${phoneNumber}`
-    );
-    // tslint:disable-next-line
-    // console.log(isValid);
-    if (!isValid) {
-      toast.error(`Please write a valid phone number`);
-    } else {
-      // setLoading(true);
-      await PhoneSignInMutation();
-      // const {
-      //   data: { StartPhoneVerification },
-      // } = await PhoneSignInMutation({
-      //   variables: { phoneNumber: `${countryCode}${phoneNumber}` },
-      //   update: (_, { data: { StartPhoneVerification } }) => {
-      //     const { ok, error } = StartPhoneVerification;
-      //     if (error) {
-      //       toast.error(error);
-      //     }
-      //   },
-      // });
-      // setLoading(false);
+    const phone = `${countryCode}${phoneNumber}`;
+    const isValid = /^\+[1-9]{1}[0-9]{7,11}$/.test(phone);
+    if (isValid) {
+      props.history.push({
+        pathname: '/verify-phone',
+        state: {
+          phone,
+        },
+      });
+      // await PhoneSignInMutation();
       console.log('From phoneSignIn: ', data);
+    } else {
+      toast.error(`Please write a valid phone number`);
     }
   };
 
