@@ -4,6 +4,7 @@ import VerifyPhonePresenter from './VerifyPhonePresenter';
 import { useMutation } from 'react-apollo';
 import { VERIFY_PHONE } from './VerifyPhoneQueries';
 import { toast } from 'react-toastify';
+import { LOG_USER_IN } from '../../sharedQueries';
 
 interface IState {
   verificationKey: string;
@@ -36,16 +37,20 @@ const VerifyPhoneContainer = (props: IProps) => {
     onCompleted: (data) => {
       const { CompletePhoneVerification } = data;
       if (CompletePhoneVerification.ok) {
+        // TODO: if CompletePhoneVeification.token is null, going to sign up with email or facebook
+        // For now, token is null, but logged in~
+        logUserIn({
+          variables: {
+            token: CompletePhoneVerification.token,
+          },
+        });
         toast.success("You're verified, logging in now");
       } else {
         toast.error(CompletePhoneVerification.error);
       }
     },
   });
-
-  // useEffect(() => {
-  //   verifyPhone();
-  // }, []);
+  const [logUserIn] = useMutation(LOG_USER_IN);
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const {
