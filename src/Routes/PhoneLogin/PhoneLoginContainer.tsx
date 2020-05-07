@@ -18,8 +18,18 @@ const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
     variables: { phoneNumber: `${countryCode}${phoneNumber}` },
     onCompleted: (data) => {
       const { StartPhoneVerification } = data;
+      const phone = `${countryCode}${phoneNumber}`;
       if (StartPhoneVerification) {
         if (StartPhoneVerification.ok) {
+          toast.success(`SMS Sent! Redirecting you to ...`);
+          setTimeout(() => {
+            props.history.push({
+              pathname: '/verify-phone',
+              state: {
+                phone,
+              },
+            });
+          }, 2000);
         } else {
           toast.error(StartPhoneVerification.error);
         }
@@ -46,14 +56,7 @@ const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
     const phone = `${countryCode}${phoneNumber}`;
     const isValid = /^\+[1-9]{1}[0-9]{7,11}$/.test(phone);
     if (isValid) {
-      props.history.push({
-        pathname: '/verify-phone',
-        state: {
-          phone,
-        },
-      });
-      // await PhoneSignInMutation();
-      console.log('From phoneSignIn: ', data);
+      await PhoneSignInMutation();
     } else {
       toast.error(`Please write a valid phone number`);
     }
