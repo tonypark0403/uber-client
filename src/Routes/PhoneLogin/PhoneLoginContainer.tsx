@@ -14,7 +14,7 @@ const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
   const [countryCode, setCountryCode] = useState('+1');
   const [phoneNumber, setPhoneNumber] = useState('6471231234');
 
-  const [PhoneSignInMutation, { data, loading }] = useMutation(PHONE_SIGN_IN, {
+  const [PhoneSignInMutation, { loading }] = useMutation(PHONE_SIGN_IN, {
     variables: { phoneNumber: `${countryCode}${phoneNumber}` },
     onCompleted: (data) => {
       const { StartPhoneVerification } = data;
@@ -36,7 +36,7 @@ const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
       }
     },
   });
-  console.log('phoneSignIn:', data);
+  // console.log('phoneSignIn:', data);
 
   const onInputChange: ChangeEventHandler<
     HTMLInputElement | HTMLSelectElement

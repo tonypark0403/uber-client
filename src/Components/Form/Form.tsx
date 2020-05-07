@@ -10,7 +10,6 @@ const Form: React.FC<IProps> = ({ submitFn, className, children }) => (
     className={className}
     onSubmit={(e) => {
       e.preventDefault();
-      console.log('clicked');
       submitFn();
     }}>
     {children}

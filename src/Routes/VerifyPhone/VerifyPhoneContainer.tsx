@@ -6,11 +6,6 @@ import { VERIFY_PHONE } from './VerifyPhoneQueries';
 import { toast } from 'react-toastify';
 import { LOG_USER_IN } from '../../sharedQueries';
 
-interface IState {
-  verificationKey: string;
-  phoneNumber: string;
-}
-
 type PhoneState = {
   phone: string; // which is coming from PhoneLoginContainer
 };
@@ -29,7 +24,7 @@ const VerifyPhoneContainer = (props: IProps) => {
   }
   const [verificationKey, setVerificationKey] = useState('');
   const [phoneNumber, setPhoneNumber] = useState(props.location.state.phone);
-  const [verifyPhone, { data, loading }] = useMutation(VERIFY_PHONE, {
+  const [verifyPhone, { loading }] = useMutation(VERIFY_PHONE, {
     variables: {
       verificationKey,
       phoneNumber,
@@ -61,10 +56,8 @@ const VerifyPhoneContainer = (props: IProps) => {
     } else if (name === 'phoneNumber') {
       setPhoneNumber(value);
     }
-    console.log(verificationKey, phoneNumber);
   };
 
-  console.log(data);
   return (
     <VerifyPhonePresenter
       loading={loading}
