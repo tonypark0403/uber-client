@@ -2,7 +2,7 @@ import React, { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import PhoneLoginPresenter from './PhoneLoginPresenter';
 import { RouteComponentProps } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { PHONE_SIGN_IN } from './PhoneLoginQueries.queries';
+import { PHONE_SIGN_IN } from './PhoneLoginQueries';
 import { useMutation } from 'react-apollo';
 
 interface IState {
