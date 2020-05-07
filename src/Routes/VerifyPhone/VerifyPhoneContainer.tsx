@@ -22,12 +22,14 @@ const VerifyPhoneContainer = (props: IProps) => {
   if (!props.location.state) {
     props.history.push('/');
   }
+
   const [verificationKey, setVerificationKey] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState(props.location.state.phone);
+
+  const [logUserIn] = useMutation(LOG_USER_IN);
   const [verifyPhone, { loading }] = useMutation(VERIFY_PHONE, {
     variables: {
       verificationKey,
-      phoneNumber,
+      phoneNumber: props.location.state.phone,
     },
     onCompleted: (data) => {
       const { CompletePhoneVerification } = data;
@@ -45,17 +47,12 @@ const VerifyPhoneContainer = (props: IProps) => {
       }
     },
   });
-  const [logUserIn] = useMutation(LOG_USER_IN);
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const {
-      target: { name, value },
+      target: { value },
     } = event;
-    if (name === 'verificationKey') {
-      setVerificationKey(value);
-    } else if (name === 'phoneNumber') {
-      setPhoneNumber(value);
-    }
+    setVerificationKey(value);
   };
 
   return (
