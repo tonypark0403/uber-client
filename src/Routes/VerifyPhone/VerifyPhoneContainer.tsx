@@ -5,9 +5,10 @@ import { useMutation } from 'react-apollo';
 import { VERIFY_PHONE } from './VerifyPhoneQueries';
 import { toast } from 'react-toastify';
 import { LOG_USER_IN } from '../../sharedQueries';
+import routes from '../../config/routes';
 
 type PhoneState = {
-  phone: string; // which is coming from PhoneLoginContainer
+  phone?: string;
 };
 
 export interface StaticContext {
@@ -19,8 +20,11 @@ interface IProps extends RouteComponentProps<{}, StaticContext, PhoneState> {
 }
 
 const VerifyPhoneContainer = (props: IProps) => {
+  let phoneNumber;
   if (!props.location.state) {
     props.history.push('/');
+  } else {
+    phoneNumber = props.location.state.phone;
   }
 
   const [verificationKey, setVerificationKey] = useState('');
@@ -29,19 +33,28 @@ const VerifyPhoneContainer = (props: IProps) => {
   const [verifyPhone, { loading }] = useMutation(VERIFY_PHONE, {
     variables: {
       verificationKey,
-      phoneNumber: props.location.state.phone,
+      phoneNumber,
     },
     onCompleted: (data) => {
       const { CompletePhoneVerification } = data;
       if (CompletePhoneVerification.ok) {
-        // TODO: if CompletePhoneVeification.token is null, going to sign up with email or facebook
-        // For now, token is null, but logged in~
-        logUserIn({
-          variables: {
-            token: CompletePhoneVerification.token,
-          },
-        });
-        toast.success("You're verified, logging in now");
+        if (CompletePhoneVerification.token) {
+          logUserIn({
+            variables: {
+              token: CompletePhoneVerification.token,
+            },
+          });
+          toast.success("You're verified, logging in now");
+        } else {
+          setTimeout(() => {
+            props.history.push({
+              pathname: routes.emailSignUp,
+              state: {
+                phone: props.location.state.phone,
+              },
+            });
+          }, 2000);
+        }
       } else {
         toast.error(CompletePhoneVerification.error);
       }

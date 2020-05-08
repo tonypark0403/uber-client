@@ -24,7 +24,7 @@ interface IProps {
   loading: boolean;
 }
 
-const VerifyPhonePresenter: React.FC<IProps> = ({
+const VerifyEmailPresenter: React.FC<IProps> = ({
   verificationKey,
   onChange,
   onSubmit,
@@ -32,9 +32,9 @@ const VerifyPhonePresenter: React.FC<IProps> = ({
 }) => (
   <Container>
     <Helmet>
-      <title>Verify Phone | Number</title>
+      <title>Verify Email | Number</title>
     </Helmet>
-    <Header backTo={routes.phoneLogin} title={'Verify Phone Number'} />
+    <Header backTo={routes.home} title={'Verify Email Number'} />
     <ExtendedForm submitFn={onSubmit}>
       <ExtendedInput
         value={verificationKey}
@@ -51,4 +51,4 @@ const VerifyPhonePresenter: React.FC<IProps> = ({
   </Container>
 );
 
-export default VerifyPhonePresenter;
+export default VerifyEmailPresenter;

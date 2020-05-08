@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { PHONE_SIGN_IN } from './PhoneLoginQueries';
 import { useMutation } from 'react-apollo';
+import routes from '../../config/routes';
 
 interface IState {
   countryCode: string;
@@ -12,7 +13,7 @@ interface IState {
 
 const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
   const [countryCode, setCountryCode] = useState('+1');
-  const [phoneNumber, setPhoneNumber] = useState('6471231234');
+  const [phoneNumber, setPhoneNumber] = useState('6479208877');
 
   const [PhoneSignInMutation, { loading }] = useMutation(PHONE_SIGN_IN, {
     variables: { phoneNumber: `${countryCode}${phoneNumber}` },
@@ -24,7 +25,7 @@ const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
           toast.success(`SMS Sent! Redirecting you to ...`);
           setTimeout(() => {
             props.history.push({
-              pathname: '/verify-phone',
+              pathname: routes.verifyPhone,
               state: {
                 phone,
               },

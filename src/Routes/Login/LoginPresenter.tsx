@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import bgImage from '../../images/bg.png';
 import styled from '../../Components/Style/typed-components';
+import routes from '../../config/routes';
 
 const Container = styled.div`
   height: 100vh;
@@ -54,12 +55,12 @@ const Grey = styled.span`
   margin-left: 10px;
 `;
 
-const SocialLogin = styled.div`
+const LoginWay = styled.div`
   border-top: 1px solid ${(props) => props.theme.greyColor};
   padding: 30px 20px;
 `;
 
-const SocialLink = styled.span`
+const LoginLink = styled.span`
   color: ${(props) => props.theme.blueColor};
   font-size: 20px;
   cursor: pointer;
@@ -78,7 +79,7 @@ const OutHomePresenter: React.SFC<IProps> = () => (
       </Logo>
     </Header>
     <Footer>
-      <Link to={'/phone-login'}>
+      <Link to={routes.phoneLogin}>
         <PhoneLogin>
           <Subtitle>Get moving with Nuber</Subtitle>
           <FakeInput>
@@ -89,11 +90,14 @@ const OutHomePresenter: React.SFC<IProps> = () => (
           </FakeInput>
         </PhoneLogin>
       </Link>
-      <Link to={'/social-login'}>
-        <SocialLogin>
-          <SocialLink>Or connect with social</SocialLink>
-        </SocialLogin>
-      </Link>
+      <LoginWay>
+        <Link to={routes.socialLogin}>
+          <LoginLink>Or connect with social</LoginLink>
+        </Link>{' '}
+        <Link to={routes.emailSignIn}>
+          <LoginLink>Or connect with email</LoginLink>
+        </Link>
+      </LoginWay>
     </Footer>
   </Container>
 );
