@@ -1,4 +1,2 @@
-import React, { FC } from 'react';
-
-const Home: FC = () => <div>Home</div>;
-export default Home;
+import HomeContainer from './HomeContainer';
+export default HomeContainer;
