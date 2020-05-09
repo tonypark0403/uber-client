@@ -1,2 +1,2 @@
-import ForgetPasswordContainer from './ForgetPasswordContainer';
-export default ForgetPasswordContainer;
+import ForgetPassword from './ForgetPasswordContainer';
+export default ForgetPassword;

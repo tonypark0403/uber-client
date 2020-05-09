@@ -1,2 +1,2 @@
-import VerifyEmailContainer from './VerifyEmailContainer';
-export default VerifyEmailContainer;
+import VerifyEmail from './VerifyEmailContainer';
+export default VerifyEmail;

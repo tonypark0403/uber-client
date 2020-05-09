@@ -1,2 +1,2 @@
-import EmailSignInContainer from './EmailSignInContainer';
-export default EmailSignInContainer;
+import EmailSignIn from './EmailSignInContainer';
+export default EmailSignIn;

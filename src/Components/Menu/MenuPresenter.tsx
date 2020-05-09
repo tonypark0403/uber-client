@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '../Style/typed-components';
 import { userProfile } from '../../types/api';
+import routes from '../../config/routes';
 
 const Container = styled.div`
   height: 100%;
@@ -91,7 +92,7 @@ const MenuPresenter: React.FC<IProps> = ({
       <React.Fragment>
         <Header>
           <Grid>
-            <Link to={'/edit-account'}>
+            <Link to={routes.editAccount}>
               <Image
                 src={
                   user.profilePhoto ||
@@ -105,8 +106,8 @@ const MenuPresenter: React.FC<IProps> = ({
             </Text>
           </Grid>
         </Header>
-        <SLink to='/trips'>Your Trips</SLink>
-        <SLink to='/settings'>Settings</SLink>
+        <SLink to={routes.trips}>Your Trips</SLink>
+        <SLink to={routes.settings}>Settings</SLink>
         <ToggleDriving onClick={toggleDrivingFn} isDriving={user.isDriving}>
           {user.isDriving ? 'Stop driving' : 'Start driving'}
         </ToggleDriving>

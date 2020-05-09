@@ -1,2 +1,2 @@
-import VerifyPhoneContainer from './VerifyPhoneContainer';
-export default VerifyPhoneContainer;
+import VerifyPhone from './VerifyPhoneContainer';
+export default VerifyPhone;

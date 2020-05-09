@@ -1,4 +1,2 @@
-import React, { FC } from 'react';
-
-const EditAccount: FC = () => <div>EditAccount</div>;
+import EditAccount from './EditAccountContainer';
 export default EditAccount;
