@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import Sidebar from 'react-sidebar';
 import styled from '../../Components/Style/typed-components';
+import Menu from '../../Components/Menu';
 
 const Container = styled.div``;
 
@@ -16,7 +17,7 @@ const HomePresenter: React.FC<IProps> = ({ isMenuOpen, toggleMenu }) => (
       <title>Home | Number</title>
     </Helmet>
     <Sidebar
-      sidebar={<b>Sidebar content</b>}
+      sidebar={<Menu />}
       open={isMenuOpen}
       onSetOpen={toggleMenu}
       styles={{
