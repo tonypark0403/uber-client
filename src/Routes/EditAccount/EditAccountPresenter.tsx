@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import PhotoInput from '../../Components/PhotoInput';
 import Button from '../../Components/Button';
 import Form from '../../Components/Form';
 import Header from '../../Components/Header';
@@ -24,6 +25,8 @@ interface IProps {
   onSubmit: any;
   onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loading: boolean;
+  // uploaded: boolean;
+  uploading: boolean;
 }
 
 const EditAccountPresenter: React.FC<IProps> = ({
@@ -34,6 +37,8 @@ const EditAccountPresenter: React.FC<IProps> = ({
   profilePhoto,
   onInputChange,
   loading,
+  // uploaded,
+  uploading,
 }) => (
   <Container>
     <Helmet>
@@ -41,6 +46,12 @@ const EditAccountPresenter: React.FC<IProps> = ({
     </Helmet>
     <Header title={'Edit Account'} backTo={'/'} />
     <ExtendedForm submitFn={onSubmit}>
+      <PhotoInput
+        // uploaded={uploaded}
+        uploading={uploading}
+        fileUrl={profilePhoto}
+        onChange={onInputChange}
+      />
       <ExtendedInput
         onChange={onInputChange}
         type={'text'}

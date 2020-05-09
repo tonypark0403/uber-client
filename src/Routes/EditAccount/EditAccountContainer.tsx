@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useMutation, useQuery, QueryResult } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
@@ -6,6 +7,7 @@ import { UPDATE_PROFILE } from './EditAccountQueries';
 import { userProfile } from '../../types/api';
 import { USER_PROFILE } from '../../sharedNotLocalQueries';
 import { toast } from 'react-toastify';
+import config from '../../config';
 
 interface IProps extends RouteComponentProps<any> {}
 
@@ -14,6 +16,7 @@ const EditAccountContainer = (props: IProps) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   const [updateProfile, { loading }] = useMutation(UPDATE_PROFILE, {
     variables: {
@@ -36,6 +39,7 @@ const EditAccountContainer = (props: IProps) => {
   const { data }: QueryResult<userProfile, Record<string, any>> = useQuery(
     USER_PROFILE,
     {
+      // fetchPolicy: 'cache-and-network',
       onCompleted: (data: userProfile) => {
         if ('GetMyProfile' in data) {
           const {
@@ -57,10 +61,31 @@ const EditAccountContainer = (props: IProps) => {
   );
   console.log('profileQuery:', data);
 
-  const onInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+  const onInputChange: React.ChangeEventHandler<HTMLInputElement> = async (
+    event
+  ) => {
     const {
-      target: { name, value },
+      target: { name, value, files },
     } = event;
+    if (files) {
+      console.log('files:', files);
+      setUploading(true);
+      const formData = new FormData(); //multipart form
+      formData.append('file', files[0]);
+      formData.append('api_key', config.CLOUDINARY.API);
+      formData.append('upload_preset', config.CLOUDINARY.UPLOAD_PRESET);
+      formData.append('timestamp', String(Date.now() / 1000));
+      const {
+        data: { secure_url },
+      } = await axios.post(
+        config.CLOUDINARY.URL(config.CLOUDINARY.CLOUD_NAME),
+        formData
+      );
+      if (secure_url) {
+        setProfilePhoto(secure_url);
+        setUploading(false);
+      }
+    }
     switch (name) {
       case 'firstName':
         setFirstName(value);
@@ -86,6 +111,7 @@ const EditAccountContainer = (props: IProps) => {
       onInputChange={onInputChange}
       loading={loading}
       onSubmit={updateProfile}
+      uploading={uploading}
     />
   );
 };
