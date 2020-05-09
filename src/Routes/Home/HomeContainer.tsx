@@ -22,7 +22,7 @@ const HomeContainer = (props: IProps) => {
     setMenuOpen(!isMenuOpen);
   };
 
-  return <HomePresenter isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />;
+  return <HomePresenter loading={loading} isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />;
 };
 
 export default HomeContainer;
