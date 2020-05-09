@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '../../Components/Header';
 import Place from '../../Components/Place';
 import styled from '../../Components/Style/typed-components';
-import { userProfile } from '../../types/api';
+import { userProfile, getPlaces } from '../../types/api';
 import routes from '../../config/routes';
 
 const Container = styled.div`
@@ -46,12 +46,16 @@ interface IProps {
   logUserOut: any;
   userData?: userProfile;
   userDataLoading: boolean;
+  placesData?: getPlaces;
+  placesLoading: boolean;
 }
 
 const SettingsPresenter: React.FC<IProps> = ({
   logUserOut,
   userData: { GetMyProfile: { user = null } = {} } = {},
+  placesData: { GetMyPlaces: { places = null } = {} } = {},
   userDataLoading,
+  placesLoading,
 }) => (
   <React.Fragment>
     <Helmet>
@@ -74,9 +78,16 @@ const SettingsPresenter: React.FC<IProps> = ({
             </React.Fragment>
           )}
       </GridLink>
-      <Place fav={false} name={'Home'} address={'12345'} />
-      <Place fav={false} name={'Home'} address={'12345'} />
-      <Place fav={false} name={'Home'} address={'12345'} />
+      {!placesLoading &&
+        places &&
+        places.map((place) => (
+          <Place
+            key={place!.id}
+            fav={place!.isFaverite}
+            name={place!.name}
+            address={place!.address}
+          />
+        ))}
       <SLink to={routes.places}>Go to Places</SLink>
       <FakeLink onClick={logUserOut}>Log Out</FakeLink>
     </Container>
