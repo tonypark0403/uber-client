@@ -1,4 +1,2 @@
-import React, { FC } from 'react';
-
-const Settings: FC = () => <span>Settings</span>;
-export default Settings;
+import SettingsContainer from './SettingsContainer';
+export default SettingsContainer;
