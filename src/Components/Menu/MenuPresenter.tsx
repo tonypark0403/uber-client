@@ -63,7 +63,6 @@ interface IToggleProps {
   isDriving: boolean;
 }
 
-// const ToggleDriving = styled<IToggleProps | any>('button')`
 const ToggleDriving = styled.button<IToggleProps>`
   -webkit-appearance: none;
   background-color: ${(props) =>
@@ -79,11 +78,13 @@ const ToggleDriving = styled.button<IToggleProps>`
 interface IProps {
   data?: userProfile;
   loading: boolean;
+  toggleDrivingFn: any;
 }
 
 const MenuPresenter: React.FC<IProps> = ({
   data: { GetMyProfile: { user = null } = {} } = {},
   loading,
+  toggleDrivingFn,
 }) => (
   <Container>
     {!loading && user && user.fullName && (
@@ -106,7 +107,7 @@ const MenuPresenter: React.FC<IProps> = ({
         </Header>
         <SLink to='/trips'>Your Trips</SLink>
         <SLink to='/settings'>Settings</SLink>
-        <ToggleDriving isDriving={user.isDriving}>
+        <ToggleDriving onClick={toggleDrivingFn} isDriving={user.isDriving}>
           {user.isDriving ? 'Stop driving' : 'Start driving'}
         </ToggleDriving>
       </React.Fragment>

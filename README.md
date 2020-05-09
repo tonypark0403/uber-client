@@ -13,10 +13,10 @@ Client for the Uber Clone - ReactJS, Apollo, Typescript
 
 ### Logged In:
 
-    - [ ] Home
-    - [ ] Ride
+    - [x] Home
     - [ ] Edit Account / Verify again
     - [ ] Settings
+    - [ ] Ride
     - [ ] Places
     - [ ] Add Place
     - [ ] Find Address

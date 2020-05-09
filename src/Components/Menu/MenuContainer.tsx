@@ -1,8 +1,10 @@
 import React from 'react';
-import { useQuery, QueryResult } from 'react-apollo';
+import { useQuery, QueryResult, useMutation } from 'react-apollo';
 import { USER_PROFILE } from '../../sharedNotLocalQueries';
 import { userProfile } from '../../types/api';
 import MenuPresenter from './MenuPresenter';
+import { TOGGLE_DRIVING } from './MenuQueries';
+import { toast } from 'react-toastify';
 
 const MenuContainer = () => {
   const {
@@ -10,7 +12,41 @@ const MenuContainer = () => {
     loading,
   }: QueryResult<userProfile, Record<string, any>> = useQuery(USER_PROFILE);
 
-  return <MenuPresenter data={data} loading={loading} />;
+  const [toggleDrivingFn] = useMutation(TOGGLE_DRIVING, {
+    onCompleted: (data) => {
+      console.log(data.ToggleDrivingMode);
+    },
+    // refetchQueries: () => [{ query: USER_PROFILE }],
+    update: (cache, { data }) => {
+      if (data) {
+        const { ToggleDrivingMode } = data;
+        if (!ToggleDrivingMode.ok) {
+          toast.error(ToggleDrivingMode.error);
+          return;
+        }
+        const query: userProfile | null = cache.readQuery({
+          query: USER_PROFILE,
+        });
+        if (query) {
+          const {
+            GetMyProfile: { user },
+          } = query;
+          if (user) {
+            user.isDriving = !user.isDriving;
+          }
+        }
+        cache.writeQuery({ query: USER_PROFILE, data: query });
+      }
+    },
+  });
+
+  return (
+    <MenuPresenter
+      data={data}
+      loading={loading}
+      toggleDrivingFn={toggleDrivingFn}
+    />
+  );
 };
 
 export default MenuContainer;
