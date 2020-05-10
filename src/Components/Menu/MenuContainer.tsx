@@ -16,7 +16,7 @@ const MenuContainer = () => {
     onCompleted: (data) => {
       console.log(data.ToggleDrivingMode);
     },
-    // refetchQueries: () => [{ query: USER_PROFILE }],
+    refetchQueries: () => [{ query: USER_PROFILE }],
     update: (cache, { data }) => {
       if (data) {
         const { ToggleDrivingMode } = data;

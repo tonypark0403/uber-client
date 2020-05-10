@@ -5,10 +5,6 @@ import { USER_PROFILE } from '../../sharedNotLocalQueries';
 import { userProfile } from '../../types/api';
 import HomePresenter from './HomePresenter';
 
-interface IState {
-  isMenuOpen: boolean;
-}
-
 interface IProps extends RouteComponentProps<any> {}
 
 const HomeContainer = (props: IProps) => {
@@ -17,12 +13,20 @@ const HomeContainer = (props: IProps) => {
     data,
     loading,
   }: QueryResult<userProfile, Record<string, any>> = useQuery(USER_PROFILE);
-  console.log('userProfile:', data, loading);
+  if (!loading) {
+    console.log('userProfile:', data, loading);
+  }
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
 
-  return <HomePresenter loading={loading} isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />;
+  return (
+    <HomePresenter
+      loading={loading}
+      isMenuOpen={isMenuOpen}
+      toggleMenu={toggleMenu}
+    />
+  );
 };
 
 export default HomeContainer;

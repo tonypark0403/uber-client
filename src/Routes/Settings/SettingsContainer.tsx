@@ -4,9 +4,15 @@ import { USER_PROFILE, GET_PLACES } from '../../sharedNotLocalQueries';
 import { LOG_USER_OUT } from '../../sharedQueries';
 import { userProfile, getPlaces } from '../../types/api';
 import SettingsPresenter from './SettingsPresenter';
+import { InMemoryCache } from 'apollo-boost';
 
 const SettingsContainer = () => {
-  const [logUserOut] = useMutation(LOG_USER_OUT);
+  const [logUserOut] = useMutation(LOG_USER_OUT, {
+    update: (caches) => {
+      caches = new InMemoryCache();
+      window.location.reload();
+    },
+  });
   const {
     data: userData,
     loading: userLoading,
