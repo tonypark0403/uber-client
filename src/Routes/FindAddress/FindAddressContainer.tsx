@@ -1,15 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { reverseGeoCode } from '../../utils/mapHelpers';
 import FindAddressPresenter from './FindAddressPresenter';
+import { toast } from 'react-toastify';
 
 interface IState {
   lat: number;
   lng: number;
+  address: string;
 }
 
 class FindAddressContainer extends React.Component<any, IState> {
   mapRef: any;
   map: google.maps.Map;
+
+  state = {
+    address: '',
+    lat: 0,
+    lng: 0,
+  };
 
   constructor(props) {
     super(props);
@@ -26,7 +35,7 @@ class FindAddressContainer extends React.Component<any, IState> {
     const {
       coords: { latitude, longitude },
     } = positon;
-    console.log(positon);
+    //console.log(positon);
     this.setState({
       lat: latitude,
       lng: longitude,
@@ -35,7 +44,7 @@ class FindAddressContainer extends React.Component<any, IState> {
   };
 
   private handleGeoError = () => {
-    console.log('No location');
+    toast.error('No location');
   };
 
   private loadMap = (lat, lng) => {
@@ -54,20 +63,44 @@ class FindAddressContainer extends React.Component<any, IState> {
     this.map.addListener('dragend', this.handleDragEnd);
   };
 
-  private handleDragEnd = () => {
+  private handleDragEnd = async () => {
     const newCenter = this.map.getCenter();
     const lat = newCenter.lat();
     const lng = newCenter.lng();
+    const address = await reverseGeoCode(lat, lng);
     this.setState({
+      address,
       lat,
       lng,
     });
+    reverseGeoCode(lat, lng);
+  };
+
+  private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name, value },
+    } = event;
+    this.setState({
+      [name]: value,
+    } as any);
+  };
+
+  private onInputBlur = () => {
+    toast.info('Address updated');
   };
 
   render() {
     // console.log(this.props); // check google
-    console.log(this.state);
-    return <FindAddressPresenter mapRef={this.mapRef} />;
+    // console.log(this.state);
+    const { address } = this.state;
+    return (
+      <FindAddressPresenter
+        mapRef={this.mapRef}
+        address={address}
+        onInputChange={this.onInputChange}
+        onInputBlur={this.onInputBlur}
+      />
+    );
   }
 }
 
