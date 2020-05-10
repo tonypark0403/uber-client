@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '../Style/typed-components';
-import Button from '../Button';
 
 const Place = styled.div`
   margin: 15px 0;

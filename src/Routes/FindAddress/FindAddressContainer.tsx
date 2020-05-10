@@ -30,6 +30,7 @@ class FindAddressContainer extends React.Component<IProps, IState> {
     super(props);
     this.mapRef = React.createRef();
   }
+
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       this.handleGeoSucces,
@@ -57,6 +58,7 @@ class FindAddressContainer extends React.Component<IProps, IState> {
   private loadMap = (lat, lng) => {
     const { google } = this.props;
     const maps = google.maps;
+    console.log('mapRef:', this.mapRef);
     const mapNode = ReactDOM.findDOMNode(this.mapRef.current);
     const mapConfig: google.maps.MapOptions = {
       center: {

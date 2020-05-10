@@ -14,8 +14,8 @@ const AddPlaceContainer: React.FC<IProps> = (props) => {
   const { location: { state = {} } = {} } = props;
   const [address, setAddress] = useState(state.address || '');
   const [name, setName] = useState('');
-  const [lat, setLat] = useState(state.lat || 0);
-  const [lng, setLng] = useState(state.lng || 0);
+  const [lat] = useState(state.lat || 0);
+  const [lng] = useState(state.lng || 0);
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = async (
     event
