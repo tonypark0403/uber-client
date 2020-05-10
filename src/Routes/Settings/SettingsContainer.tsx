@@ -16,11 +16,11 @@ const SettingsContainer = () => {
   const {
     data: userData,
     loading: userLoading,
-  }: QueryResult<userProfile, Record<string, any>> = useQuery(USER_PROFILE);
+  }: QueryResult<userProfile> = useQuery(USER_PROFILE);
   const {
     data: placesData,
     loading: placesLoading,
-  }: QueryResult<getPlaces, Record<string, any>> = useQuery(GET_PLACES);
+  }: QueryResult<getPlaces> = useQuery(GET_PLACES);
   return (
     <SettingsPresenter
       userDataLoading={userLoading}
