@@ -6,13 +6,16 @@ import { ADD_PLACE } from './AddPlaceQueries';
 import { toast } from 'react-toastify';
 import { GET_PLACES } from '../../sharedNotLocalQueries';
 
-interface IProps extends RouteComponentProps<any> {}
+interface IProps extends RouteComponentProps<any> {
+  location;
+}
 
 const AddPlaceContainer: React.FC<IProps> = (props) => {
-  const [address, setAddress] = useState('');
+  const { location: { state = {} } = {} } = props;
+  const [address, setAddress] = useState(state.address || '');
   const [name, setName] = useState('');
-  const [lat, setLat] = useState(0);
-  const [lng, setLng] = useState(0);
+  const [lat, setLat] = useState(state.lat || 0);
+  const [lng, setLng] = useState(state.lng || 0);
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = async (
     event

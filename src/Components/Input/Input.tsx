@@ -30,6 +30,7 @@ interface IProps {
   value: string;
   onChange: any;
   className?: string;
+  disabled?: boolean;
 }
 
 const Input: FC<IProps> = ({
@@ -40,6 +41,7 @@ const Input: FC<IProps> = ({
   value,
   onChange,
   className,
+  disabled = false,
 }) => (
   <Container
     type={type}
@@ -49,6 +51,7 @@ const Input: FC<IProps> = ({
     value={value}
     required={required}
     onChange={onChange}
+    disabled={disabled}
   />
 );
 

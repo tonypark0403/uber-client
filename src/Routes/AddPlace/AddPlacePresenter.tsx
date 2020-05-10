@@ -52,6 +52,7 @@ const AddPlacePresenter: React.FC<IProps> = ({
           onChange={onInputChange}
           value={name}
           name={'name'}
+          disabled={!pickedAddress}
         />
         <ExtendedInput
           placeholder={'Address'}
@@ -59,6 +60,7 @@ const AddPlacePresenter: React.FC<IProps> = ({
           onChange={onInputChange}
           value={address}
           name={'address'}
+          disabled={!pickedAddress}
         />
         <ExtendedLink to={routes.findAddress}>Pick place from map</ExtendedLink>
         {pickedAddress && (

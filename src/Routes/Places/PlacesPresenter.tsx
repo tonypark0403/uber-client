@@ -30,7 +30,13 @@ const PlacesPresenter: React.FC<IProps> = ({
     </Helmet>
     <Header title={'Places'} backTo={routes.home} />
     <Container>
-      {!loading && places && places.length === 0 && 'You have no places'}
+      {!loading && places && places.length === 0 && (
+        <>
+          'You have no places'
+          <br />
+          <br />
+        </>
+      )}
       {!loading &&
         places &&
         places.map((place) => (
