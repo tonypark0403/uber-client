@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Query } from 'react-apollo';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 import { USER_PROFILE } from '../../sharedNotLocalQueries';
-import { userProfile } from '../../types/api';
 import HomePresenter from './HomePresenter';
 import { geoCode } from '../../utils/mapHelpers';
+import { toast } from 'react-toastify';
 
 interface IState {
   isMenuOpen: boolean;
@@ -14,6 +14,8 @@ interface IState {
   toAddress: string;
   toLat: number;
   toLng: number;
+  distance?: string;
+  duration?: string;
 }
 
 interface IProps extends RouteComponentProps<any> {
@@ -25,6 +27,7 @@ class HomeContainer extends React.Component<IProps, IState> {
   map: google.maps.Map;
   userMarker: google.maps.Marker;
   toMarker: google.maps.Marker;
+  directions: google.maps.DirectionsRenderer;
 
   state = {
     isMenuOpen: false,
@@ -77,7 +80,7 @@ class HomeContainer extends React.Component<IProps, IState> {
         lng,
       },
       disableDefaultUI: true,
-      minZoom: 9,
+      // minZoom: 9,
       maxZoom: 20,
       zoom: 12,
     };
@@ -142,11 +145,6 @@ class HomeContainer extends React.Component<IProps, IState> {
     const result = await geoCode(toAddress);
     if (result !== false) {
       const { lat, lng, formatted_address: formatedAddress } = result;
-      this.setState({
-        toAddress: formatedAddress,
-        toLat: lat,
-        toLng: lng,
-      });
       if (this.toMarker) {
         this.toMarker.setMap(null);
       }
@@ -158,6 +156,18 @@ class HomeContainer extends React.Component<IProps, IState> {
       };
       this.toMarker = new maps.Marker(toMarkerOptions);
       this.toMarker.setMap(this.map);
+      const bounds = new maps.LatLngBounds();
+      bounds.extend({ lat, lng });
+      bounds.extend({ lat: this.state.lat, lng: this.state.lng });
+      this.map.fitBounds(bounds);
+      this.setState(
+        {
+          toAddress: formatedAddress,
+          toLat: lat,
+          toLng: lng,
+        },
+        this.createPath
+      );
     }
   };
 
@@ -165,6 +175,45 @@ class HomeContainer extends React.Component<IProps, IState> {
     if (event.key === 'Enter') {
       this.onAddressSubmit();
     }
+  };
+
+  private createPath = () => {
+    const { toLat, toLng, lat, lng } = this.state;
+    if (this.directions) {
+      this.directions.setMap(null);
+    }
+    const renderOptions: google.maps.DirectionsRendererOptions = {
+      polylineOptions: {
+        strokeColor: '#000',
+      },
+      suppressMarkers: true,
+    };
+    this.directions = new google.maps.DirectionsRenderer(renderOptions);
+    const directionsService: google.maps.DirectionsService = new google.maps.DirectionsService();
+    const to = new google.maps.LatLng(toLat, toLng);
+    const from = new google.maps.LatLng(lat, lng);
+    const directionsOptions: google.maps.DirectionsRequest = {
+      destination: to,
+      origin: from,
+      travelMode: google.maps.TravelMode.DRIVING,
+    };
+    directionsService.route(directionsOptions, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        const { routes } = result;
+        const {
+          distance: { text: distance },
+          duration: { text: duration },
+        } = routes[0].legs[0];
+        this.setState({
+          distance,
+          duration,
+        });
+        this.directions.setDirections(result);
+        this.directions.setMap(this.map);
+      } else {
+        toast.error('There is no route there...');
+      }
+    });
   };
 
   public render() {
