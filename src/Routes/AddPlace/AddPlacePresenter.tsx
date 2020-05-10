@@ -30,7 +30,7 @@ interface IProps {
   onSubmit: any;
 }
 
-const AddPlacePresenter: React.SFC<IProps> = ({
+const AddPlacePresenter: React.FC<IProps> = ({
   onInputChange,
   address,
   name,

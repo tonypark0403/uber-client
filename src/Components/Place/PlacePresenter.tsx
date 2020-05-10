@@ -31,11 +31,17 @@ interface IProps {
   fav: boolean;
   name: string;
   address: string;
+  onStarPress: any;
 }
 
-const PlacePresenter: React.SFC<IProps> = ({ fav, name, address }) => (
+const PlacePresenter: React.FC<IProps> = ({
+  onStarPress,
+  fav,
+  name,
+  address,
+}) => (
   <Place>
-    <Icon>{fav ? '★' : '✩'}</Icon>
+    <Icon onClick={onStarPress}>{fav ? '★' : '✩'}</Icon>
     <Container>
       <Name>{name}</Name>
       <Address>{address}</Address>
