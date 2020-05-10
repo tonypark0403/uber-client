@@ -34,6 +34,7 @@ const Remove = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
+
 interface IProps {
   fav: boolean;
   name: string;
