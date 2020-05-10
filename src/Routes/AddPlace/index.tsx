@@ -1,4 +1,2 @@
-import React, { FC } from 'react';
-
-const AddPlace: FC = () => <div>AddPlace</div>;
+import AddPlace from './AddPlaceContainer';
 export default AddPlace;
