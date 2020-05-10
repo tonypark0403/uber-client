@@ -26,8 +26,8 @@ const EditAccountContainer = (props: IProps) => {
       profilePhoto,
     },
     refetchQueries: [{ query: USER_PROFILE }],
-    onCompleted: (data) => {
-      const { UpdateMyProfile } = data;
+    onCompleted: (updateProfieData) => {
+      const { UpdateMyProfile } = updateProfieData;
       if (UpdateMyProfile.ok) {
         toast.success('Profile updated!');
       } else if (UpdateMyProfile.error) {
@@ -40,18 +40,17 @@ const EditAccountContainer = (props: IProps) => {
     USER_PROFILE,
     {
       // fetchPolicy: 'cache-and-network',
-      onCompleted: (data: userProfile) => {
-        if ('GetMyProfile' in data) {
+      onCompleted: (userProfileData: userProfile) => {
+        if ('GetMyProfile' in userProfileData) {
           const {
             GetMyProfile: { user },
-          } = data;
+          } = userProfileData;
           if (user !== null) {
-            const { firstName, lastName, email, profilePhoto } = user;
-            setEmail(email || '');
-            setFirstName(firstName);
-            setLastName(lastName);
+            setEmail(user.email || '');
+            setFirstName(user.firstName);
+            setLastName(user.lastName);
             setProfilePhoto(
-              profilePhoto ||
+              user.profilePhoto ||
                 'https://lh3.googleusercontent.com/-CTwXMuZRaWw/AAAAAAAAAAI/AAAAAAAAAUg/8T5nFuIdnHE/photo.jpg'
             );
           }
@@ -59,7 +58,7 @@ const EditAccountContainer = (props: IProps) => {
       },
     }
   );
-  console.log('profileQuery:', data);
+  // console.log('profileQuery:', data);
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = async (
     event
@@ -68,9 +67,9 @@ const EditAccountContainer = (props: IProps) => {
       target: { name, value, files },
     } = event;
     if (files) {
-      console.log('files:', files);
+      // console.log('files:', files);
       setUploading(true);
-      const formData = new FormData(); //multipart form
+      const formData = new FormData(); // multipart form
       formData.append('file', files[0]);
       formData.append('api_key', config.CLOUDINARY.API);
       formData.append('upload_preset', config.CLOUDINARY.UPLOAD_PRESET);

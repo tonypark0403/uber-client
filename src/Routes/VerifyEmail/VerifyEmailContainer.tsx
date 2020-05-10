@@ -6,7 +6,7 @@ import { VERIFY_EMAIL } from './VerifyEmailQueries';
 import { toast } from 'react-toastify';
 import routes from '../../config/routes';
 
-interface IProps extends RouteComponentProps {}
+interface IProps extends RouteComponentProps<any> {}
 
 const VerifyEmailContainer = (props: IProps) => {
   const [verificationKey, setVerificationKey] = useState('');

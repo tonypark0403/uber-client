@@ -18,9 +18,9 @@ const AddPlaceContainer: React.FC<IProps> = (props) => {
     event
   ) => {
     const {
-      target: { name, value },
+      target: { name: inputName, value },
     } = event;
-    switch (name) {
+    switch (inputName) {
       case 'address':
         setAddress(value);
         break;

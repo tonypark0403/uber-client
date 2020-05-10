@@ -13,13 +13,10 @@ const MenuContainer = () => {
   }: QueryResult<userProfile, Record<string, any>> = useQuery(USER_PROFILE);
 
   const [toggleDrivingFn] = useMutation(TOGGLE_DRIVING, {
-    onCompleted: (data) => {
-      console.log(data.ToggleDrivingMode);
-    },
     refetchQueries: () => [{ query: USER_PROFILE }],
-    update: (cache, { data }) => {
+    update: (cache, { data: toggleData }) => {
       if (data) {
-        const { ToggleDrivingMode } = data;
+        const { ToggleDrivingMode } = toggleData;
         if (!ToggleDrivingMode.ok) {
           toast.error(ToggleDrivingMode.error);
           return;
