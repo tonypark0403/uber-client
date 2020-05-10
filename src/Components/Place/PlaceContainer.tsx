@@ -2,7 +2,7 @@ import React from 'react';
 import { useMutation } from 'react-apollo';
 import { GET_PLACES } from '../../sharedNotLocalQueries';
 import PlacePresenter from './PlacePresenter';
-import { EDIT_PLACE } from './PlaceQueries';
+import { EDIT_PLACE, DELETE_PLACE } from './PlaceQueries';
 
 interface IProps {
   fav: boolean;
@@ -20,12 +20,17 @@ const PlaceContainer: React.FC<IProps> = (props) => {
     },
     refetchQueries: [{ query: GET_PLACES }],
   });
+  const [removePlace] = useMutation(DELETE_PLACE, {
+    variables: { placeId: id },
+    refetchQueries: [{ query: GET_PLACES }],
+  });
   return (
     <PlacePresenter
       onStarPress={editPlace}
       fav={fav}
       name={name}
       address={address}
+      onRemovePress={removePlace}
     />
   );
 };

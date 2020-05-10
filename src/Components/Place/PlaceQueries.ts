@@ -8,3 +8,12 @@ export const EDIT_PLACE = gql`
     }
   }
 `;
+
+export const DELETE_PLACE = gql`
+  mutation deletePlace($placeId: Int!) {
+    DeletePlace(placeId: $placeId) {
+      ok
+      error
+    }
+  }
+`;
