@@ -6,6 +6,7 @@ import Form from '../../Components/Form';
 import Header from '../../Components/Header';
 import Input from '../../Components/Input';
 import styled from '../../Components/Style/typed-components';
+import routes from '../../config/routes';
 
 const Container = styled.div`
   padding: 0 40px;
@@ -40,7 +41,7 @@ const AddPlacePresenter: React.SFC<IProps> = ({
     <Helmet>
       <title>Add Place | Nuber</title>
     </Helmet>
-    <Header title={'Add Place'} backTo={'/'} />
+    <Header title={'Add Place'} backTo={routes.home} />
     <Container>
       <Form submitFn={onSubmit}>
         <ExtendedInput
@@ -57,7 +58,7 @@ const AddPlacePresenter: React.SFC<IProps> = ({
           value={address}
           name={'address'}
         />
-        <ExtendedLink to={'/find-address'}>Pick place from map</ExtendedLink>
+        <ExtendedLink to={routes.findAddress}>Pick place from map</ExtendedLink>
         <Button onClick={null} value={loading ? 'Adding place' : 'Add Place'} />
       </Form>
     </Container>

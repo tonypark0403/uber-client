@@ -6,14 +6,14 @@ export const ADD_PLACE = gql`
     $lat: Float!
     $lng: Float!
     $address: String!
-    $isFav: Boolean!
+    $isFaverite: Boolean!
   ) {
     AddPlace(
       name: $name
       lat: $lat
       lng: $lng
       address: $address
-      isFav: $isFav
+      isFaverite: $isFaverite
     ) {
       ok
       error

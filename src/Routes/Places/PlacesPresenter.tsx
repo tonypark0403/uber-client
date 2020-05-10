@@ -5,6 +5,7 @@ import Header from '../../Components/Header';
 import Place from '../../Components/Place';
 import styled from '../../Components/Style/typed-components';
 import { getPlaces } from '../../types/api';
+import routes from '../../config/routes';
 
 const Container = styled.div`
   padding: 0 40px;
@@ -19,7 +20,7 @@ interface IProps {
   loading: boolean;
 }
 
-const PlacesPresenter: React.SFC<IProps> = ({
+const PlacesPresenter: React.FC<IProps> = ({
   data: { GetMyPlaces: { places = null } = {} } = {},
   loading,
 }) => (
@@ -27,7 +28,7 @@ const PlacesPresenter: React.SFC<IProps> = ({
     <Helmet>
       <title>Places | Number</title>
     </Helmet>
-    <Header title={'Places'} backTo={'/'} />
+    <Header title={'Places'} backTo={routes.home} />
     <Container>
       {!loading && places && places.length === 0 && 'You have no places'}
       {!loading &&
@@ -40,7 +41,7 @@ const PlacesPresenter: React.SFC<IProps> = ({
             address={place!.address}
           />
         ))}
-      <SLink to={'/add-place'}>Add some places!</SLink>
+      <SLink to={routes.addPlace}>Add some places!</SLink>
     </Container>
   </React.Fragment>
 );

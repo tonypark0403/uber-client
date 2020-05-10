@@ -33,9 +33,9 @@ const AddPlaceContainer: React.FC<IProps> = (props) => {
   const [addPlace] = useMutation(ADD_PLACE, {
     variables: {
       address,
-      isFavorite: false,
-      lat,
-      lng,
+      isFaverite: false,
+      lat: Number(lat),
+      lng: Number(lng),
       name,
     },
     onCompleted: (data) => {
