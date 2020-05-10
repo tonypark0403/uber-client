@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useMutation, useQuery, QueryResult } from 'react-apollo';
+import { useMutation, useQuery } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
 import EditAccountPresenter from './EditAccountPresenter';
 import { UPDATE_PROFILE } from './EditAccountQueries';
@@ -36,28 +36,25 @@ const EditAccountContainer = (props: IProps) => {
     },
   });
 
-  const { data }: QueryResult<userProfile, Record<string, any>> = useQuery(
-    USER_PROFILE,
-    {
-      // fetchPolicy: 'cache-and-network',
-      onCompleted: (userProfileData: userProfile) => {
-        if ('GetMyProfile' in userProfileData) {
-          const {
-            GetMyProfile: { user },
-          } = userProfileData;
-          if (user !== null) {
-            setEmail(user.email || '');
-            setFirstName(user.firstName);
-            setLastName(user.lastName);
-            setProfilePhoto(
-              user.profilePhoto ||
-                'https://lh3.googleusercontent.com/-CTwXMuZRaWw/AAAAAAAAAAI/AAAAAAAAAUg/8T5nFuIdnHE/photo.jpg'
-            );
-          }
+  useQuery(USER_PROFILE, {
+    // fetchPolicy: 'cache-and-network',
+    onCompleted: (userProfileData: userProfile) => {
+      if ('GetMyProfile' in userProfileData) {
+        const {
+          GetMyProfile: { user },
+        } = userProfileData;
+        if (user !== null) {
+          setEmail(user.email || '');
+          setFirstName(user.firstName);
+          setLastName(user.lastName);
+          setProfilePhoto(
+            user.profilePhoto ||
+              'https://lh3.googleusercontent.com/-CTwXMuZRaWw/AAAAAAAAAAI/AAAAAAAAAUg/8T5nFuIdnHE/photo.jpg'
+          );
         }
-      },
-    }
-  );
+      }
+    },
+  });
   // console.log('profileQuery:', data);
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = async (

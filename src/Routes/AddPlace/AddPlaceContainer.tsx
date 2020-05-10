@@ -11,8 +11,8 @@ interface IProps extends RouteComponentProps<any> {}
 const AddPlaceContainer: React.FC<IProps> = (props) => {
   const [address, setAddress] = useState('');
   const [name, setName] = useState('');
-  const [lat, setLat] = useState('43.788741');
-  const [lng, setLng] = useState('-79.336196');
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = async (
     event
@@ -34,8 +34,8 @@ const AddPlaceContainer: React.FC<IProps> = (props) => {
     variables: {
       address,
       isFaverite: false,
-      lat: Number(lat),
-      lng: Number(lng),
+      lat,
+      lng,
       name,
     },
     onCompleted: (data) => {
@@ -59,6 +59,7 @@ const AddPlaceContainer: React.FC<IProps> = (props) => {
       name={name}
       loading={false}
       onSubmit={addPlace}
+      pickedAddress={lat !== 0 && lng !== 0}
     />
   );
 };
