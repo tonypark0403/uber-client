@@ -30,11 +30,18 @@ interface IProps {
   address: string;
   onInputBlur: () => void;
   onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 class FindAddressPresenter extends React.Component<IProps> {
   public render() {
-    const { mapRef, address, onInputChange, onInputBlur } = this.props;
+    const {
+      mapRef,
+      address,
+      onInputChange,
+      onInputBlur,
+      onKeyDown,
+    } = this.props;
     return (
       <div>
         <Helmet>
@@ -43,6 +50,7 @@ class FindAddressPresenter extends React.Component<IProps> {
         <AddressBar
           onBlur={onInputBlur}
           onChange={onInputChange}
+          onKeyDown={onKeyDown}
           name={'address'}
           value={address}
         />

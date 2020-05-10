@@ -18,7 +18,9 @@ Client for the Uber Clone - ReactJS, Apollo, Typescript
     - [x] Settings
     - [x] Places
     - [X] Add Place
+    - [x] Find Address
+    - [ ] Home detail
+    - [ ] Chat
     - [ ] Ride
-    - [ ] Find Address
-    - [ ] Challenge: Ride History
+    - [x] Challenge: Email Sign In
     - [ ] Challenge: Ride History

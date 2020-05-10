@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { reverseGeoCode } from '../../utils/mapHelpers';
+import { geoCode, reverseGeoCode } from '../../utils/mapHelpers';
 import FindAddressPresenter from './FindAddressPresenter';
 import { toast } from 'react-toastify';
 
@@ -35,12 +35,13 @@ class FindAddressContainer extends React.Component<any, IState> {
     const {
       coords: { latitude, longitude },
     } = positon;
-    //console.log(positon);
+    // console.log(positon);
     this.setState({
       lat: latitude,
       lng: longitude,
     });
     this.loadMap(latitude, longitude);
+    this.reverseGeocodeAddress(latitude, longitude);
   };
 
   private handleGeoError = () => {
@@ -57,23 +58,23 @@ class FindAddressContainer extends React.Component<any, IState> {
         lng,
       },
       disableDefaultUI: true,
-      zoom: 11,
+      minZoom: 9,
+      maxZoom: 20,
+      zoom: 12,
     };
     this.map = new maps.Map(mapNode, mapConfig);
     this.map.addListener('dragend', this.handleDragEnd);
   };
 
-  private handleDragEnd = async () => {
+  private handleDragEnd = () => {
     const newCenter = this.map.getCenter();
     const lat = newCenter.lat();
     const lng = newCenter.lng();
-    const address = await reverseGeoCode(lat, lng);
     this.setState({
-      address,
       lat,
       lng,
     });
-    reverseGeoCode(lat, lng);
+    this.reverseGeocodeAddress(lat, lng);
   };
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,8 +86,37 @@ class FindAddressContainer extends React.Component<any, IState> {
     } as any);
   };
 
-  private onInputBlur = () => {
-    toast.info('Address updated');
+  private onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      this.onInputBlur();
+    }
+  };
+
+  private onInputBlur = async () => {
+    // toast.info('Address updated');
+    const { address } = this.state;
+    const result = await geoCode(address);
+    if (result) {
+      const { lat, lng, formatted_address: formatedAddress } = result;
+      this.setState({
+        address: formatedAddress,
+        lat,
+        lng,
+      });
+      this.map.panTo({ lat, lng });
+      this.map.setZoom(18);
+      // const latLng = new google.maps.LatLng(lat, lng);
+      // this.map.panTo(latLng);
+    }
+  };
+
+  private reverseGeocodeAddress = async (lat: number, lng: number) => {
+    const address = await reverseGeoCode(lat, lng);
+    if (address) {
+      this.setState({
+        address,
+      });
+    }
   };
 
   render() {
@@ -99,6 +129,7 @@ class FindAddressContainer extends React.Component<any, IState> {
         address={address}
         onInputChange={this.onInputChange}
         onInputBlur={this.onInputBlur}
+        onKeyDown={this.onKeyDown}
       />
     );
   }
