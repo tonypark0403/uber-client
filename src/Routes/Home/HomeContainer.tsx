@@ -14,8 +14,9 @@ interface IState {
   toAddress: string;
   toLat: number;
   toLng: number;
-  distance?: string;
+  distance: string;
   duration?: string;
+  price?: string;
 }
 
 interface IProps extends RouteComponentProps<any> {
@@ -30,9 +31,12 @@ class HomeContainer extends React.Component<IProps, IState> {
   directions: google.maps.DirectionsRenderer;
 
   state = {
+    distance: '',
+    duration: undefined,
     isMenuOpen: false,
     lat: 0,
     lng: 0,
+    price: undefined,
     toAddress: '',
     toLat: 0,
     toLng: 0,
@@ -197,27 +201,44 @@ class HomeContainer extends React.Component<IProps, IState> {
       origin: from,
       travelMode: google.maps.TravelMode.DRIVING,
     };
-    directionsService.route(directionsOptions, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK) {
-        const { routes } = result;
-        const {
-          distance: { text: distance },
-          duration: { text: duration },
-        } = routes[0].legs[0];
-        this.setState({
+    directionsService.route(directionsOptions, this.handleRouteRequest);
+  };
+
+  private handleRouteRequest = (
+    result: google.maps.DirectionsResult,
+    status: google.maps.DirectionsStatus
+  ) => {
+    if (status === google.maps.DirectionsStatus.OK) {
+      const { routes } = result;
+      const {
+        distance: { text: distance },
+        duration: { text: duration },
+      } = routes[0].legs[0];
+      this.directions.setDirections(result);
+      this.directions.setMap(this.map);
+      this.setState(
+        {
           distance,
           duration,
-        });
-        this.directions.setDirections(result);
-        this.directions.setMap(this.map);
-      } else {
-        toast.error('There is no route there...');
-      }
-    });
+        },
+        this.setPrice
+      );
+    } else {
+      toast.error('There is no route there, you have to ');
+    }
+  };
+
+  private setPrice = () => {
+    const { distance } = this.state;
+    if (distance) {
+      this.setState({
+        price: Number(parseFloat(distance.replace(',', ''))).toFixed(2),
+      });
+    }
   };
 
   public render() {
-    const { isMenuOpen, toAddress } = this.state;
+    const { isMenuOpen, toAddress, price } = this.state;
 
     return (
       <Query query={USER_PROFILE}>
@@ -228,6 +249,7 @@ class HomeContainer extends React.Component<IProps, IState> {
             toggleMenu={this.toggleMenu}
             mapRef={this.mapRef}
             toAddress={toAddress}
+            price={price}
             onInputChange={this.onInputChange}
             onAddressSubmit={this.onAddressSubmit}
             onKeyDown={this.onKeyDown}

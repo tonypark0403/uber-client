@@ -41,12 +41,17 @@ const ExtendedButton = styled(Button)`
   width: 80%;
 `;
 
+const RequestButton = styled(ExtendedButton)`
+  bottom: 200px;
+`;
+
 interface IProps {
   isMenuOpen: boolean;
   toggleMenu: () => void;
   loading: boolean;
   mapRef: any;
   toAddress: string;
+  price?: string;
   onAddressSubmit: () => void;
   onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -58,6 +63,7 @@ const HomePresenter: React.FC<IProps> = ({
   loading,
   mapRef,
   toAddress,
+  price,
   onInputChange,
   onAddressSubmit,
   onKeyDown,
@@ -85,10 +91,17 @@ const HomePresenter: React.FC<IProps> = ({
         onBlur={null}
         onKeyDown={onKeyDown}
       />
+      {price && (
+        <RequestButton
+          onClick={onAddressSubmit}
+          disabled={toAddress === ''}
+          value={`Request Ride ($${price})`}
+        />
+      )}
       <ExtendedButton
         onClick={onAddressSubmit}
         disabled={toAddress === ''}
-        value={'Pick Address'}
+        value={price ? 'Change address' : 'Pick Address'}
       />
       <Map ref={mapRef} />
     </Sidebar>
