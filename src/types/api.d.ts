@@ -47,6 +47,29 @@ export interface editPlaceVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: deletePlace
+// ====================================================
+
+export interface deletePlace_DeletePlace {
+  __typename: "DeletePlaceResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface deletePlace {
+  DeletePlace: deletePlace_DeletePlace;
+}
+
+export interface deletePlaceVariables {
+  placeId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addPlace
 // ====================================================
 
@@ -171,6 +194,29 @@ export interface updatePassword {
 export interface updatePasswordVariables {
   email: string;
   password: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: reportMovement
+// ====================================================
+
+export interface reportMovement_ReportMovement {
+  __typename: "ReportMovementResponse";
+  ok: boolean;
+}
+
+export interface reportMovement {
+  ReportMovement: reportMovement_ReportMovement;
+}
+
+export interface reportMovementVariables {
+  lat: number;
+  lng: number;
 }
 
 /* tslint:disable */
