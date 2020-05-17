@@ -68,11 +68,14 @@ const ChatContainer = (props: IProps) => {
           chat: { messages },
         },
       } = prev;
-      const newMessageId = MessageSubscription.id;
-      const latestMessageId = messages[messages.length - 1].id;
 
-      if (newMessageId === latestMessageId) {
-        return;
+      if (messages.length > 0) {
+        const newMessageId = MessageSubscription.id;
+        const latestMessageId = messages[messages.length - 1].id;
+
+        if (newMessageId === latestMessageId) {
+          return;
+        }
       }
       const newObject = Object.assign({}, prev, {
         GetChat: {
