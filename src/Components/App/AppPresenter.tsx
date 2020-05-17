@@ -17,6 +17,7 @@ import EmailSignUp from '../../Routes/EmailSignUp';
 import EmailSignIn from '../../Routes/EmailSignIn';
 import ForgetPassword from '../../Routes/ForgetPassword';
 import VerifyEmail from '../../Routes/VerifyEmail';
+import Chat from '../../Routes/Chat';
 
 interface IProps {
   isLoggedIn: boolean;
@@ -46,6 +47,7 @@ const LoggedInRoutes: React.FC = () => (
     <Route path={routes.verifyEmail} component={VerifyEmail} />
     <Route path={routes.home} exact={true} component={Home} />
     <Route path={routes.ride + '/:rideId'} exact={true} component={Ride} />
+    <Route path={routes.chat + '/:chatId'} exact={true} component={Chat} />
     <Route path={routes.editAccount} exact={true} component={EditAccount} />
     <Route path={routes.settings} exact={true} component={Settings} />
     <Route path={routes.places} exact={true} component={Places} />

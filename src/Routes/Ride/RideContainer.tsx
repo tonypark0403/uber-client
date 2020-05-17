@@ -6,6 +6,7 @@ import { USER_PROFILE } from '../../sharedNotLocalQueries';
 import RidePresenter from './RidePresenter';
 import { GET_RIDE, RIDE_SUBSCRIPTION, UPDATE_RIDE_STATUS } from './RideQueries';
 import { userProfile, getRide } from '../../types/api';
+import routes from '../../config/routes';
 
 interface IProps extends RouteComponentProps<any> {}
 
@@ -16,7 +17,7 @@ const RideContainer = (props: IProps) => {
     },
   } = props;
   if (!rideId) {
-    props.history.push('/');
+    props.history.push(routes.home);
   }
 
   const {
@@ -32,6 +33,19 @@ const RideContainer = (props: IProps) => {
   });
   const subscribeOptions: SubscribeToMoreOptions = {
     document: RIDE_SUBSCRIPTION,
+    updateQuery: (prev, { subscriptionData }) => {
+      if (!subscriptionData.data) {
+        return prev;
+      }
+      const {
+        data: {
+          RideStatusSubscription: { status },
+        },
+      } = subscriptionData;
+      if (status === 'FINISHED') {
+        window.location.href = routes.home;
+      }
+    },
   };
   subscribeToMore(subscribeOptions);
   const [updateRideFn] = useMutation(UPDATE_RIDE_STATUS);
