@@ -6,8 +6,12 @@ import { USER_PROFILE } from '../../sharedNotLocalQueries';
 import HomePresenter from './HomePresenter';
 import { geoCode } from '../../utils/mapHelpers';
 import { toast } from 'react-toastify';
-import { reportMovement, reportMovementVariables } from '../../types/api';
-import { REPORT_LOCATION } from './HomeQueries';
+import {
+  reportMovement,
+  reportMovementVariables,
+  getDrivers,
+} from '../../types/api';
+import { REPORT_LOCATION, GET_NEARBY_DRIVERS } from './HomeQueries';
 
 interface IState {
   isMenuOpen: boolean;
@@ -32,6 +36,7 @@ class HomeContainer extends React.Component<IProps, IState> {
   userMarker: google.maps.Marker;
   toMarker: google.maps.Marker;
   directions: google.maps.DirectionsRenderer;
+  drivers: google.maps.Marker[];
 
   state = {
     distance: '',
@@ -48,6 +53,7 @@ class HomeContainer extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.mapRef = React.createRef();
+    this.drivers = [];
   }
 
   componentDidMount() {
@@ -234,7 +240,7 @@ class HomeContainer extends React.Component<IProps, IState> {
         this.setPrice
       );
     } else {
-      toast.error('There is no route there, you have to ');
+      toast.error('There is no route there, you have to take an airplane!');
     }
   };
 
@@ -247,23 +253,88 @@ class HomeContainer extends React.Component<IProps, IState> {
     }
   };
 
+  private handleNearByDrivers = (data: {} | getDrivers) => {
+    if (!data) {
+      return;
+    }
+    if ('GetNearbyDrivers' in data) {
+      const {
+        GetNearbyDrivers: { drivers, ok },
+      } = data;
+      if (ok && drivers) {
+        for (const driver of drivers) {
+          if (driver) {
+            // console.log('driver:', driver);
+            const exisitingDriver:
+              | google.maps.Marker
+              | undefined = this.drivers.find(
+              (driverMarker: google.maps.Marker) => {
+                const markerID = driverMarker.get('ID');
+                return markerID === driver.id;
+              }
+            );
+            if (exisitingDriver) {
+              exisitingDriver.setPosition({
+                lat: driver.lastLat,
+                lng: driver.lastLng,
+              });
+              exisitingDriver.setMap(this.map);
+            } else {
+              const markerOptions: google.maps.MarkerOptions = {
+                position: {
+                  lat: driver.lastLat,
+                  lng: driver.lastLng,
+                },
+                icon: {
+                  path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                  scale: 5,
+                },
+              };
+              const newMarker: google.maps.Marker = new google.maps.Marker(
+                markerOptions
+              );
+              this.drivers.push(newMarker);
+              newMarker.set('ID', driver.id); // to check specific driver above
+              newMarker.setMap(this.map);
+            }
+          }
+        }
+      }
+    }
+  };
+
   public render() {
     const { isMenuOpen, toAddress, price } = this.state;
 
     return (
       <Query query={USER_PROFILE}>
-        {({ loading }) => (
-          <HomePresenter
-            loading={loading}
-            isMenuOpen={isMenuOpen}
-            toggleMenu={this.toggleMenu}
-            mapRef={this.mapRef}
-            toAddress={toAddress}
-            price={price}
-            onInputChange={this.onInputChange}
-            onAddressSubmit={this.onAddressSubmit}
-            onKeyDown={this.onKeyDown}
-          />
+        {({ loading, data }) => (
+          <Query
+            query={GET_NEARBY_DRIVERS}
+            pollInterval={1000}
+            fetchPolicy='cache-and-network'
+            skip={
+              data &&
+              data.GetMyProfile &&
+              data.GetMyProfile.user &&
+              data.GetMyProfile.user.isDriving
+            }
+            onCompleted={this.handleNearByDrivers}>
+            {() => (
+              <HomePresenter
+                loading={loading}
+                isMenuOpen={isMenuOpen}
+                toggleMenu={this.toggleMenu}
+                mapRef={this.mapRef}
+                toAddress={toAddress}
+                price={price}
+                data={data}
+                onInputChange={this.onInputChange}
+                onAddressSubmit={this.onAddressSubmit}
+                onKeyDown={this.onKeyDown}
+              />
+            )}
+          </Query>
         )}
       </Query>
     );
