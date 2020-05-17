@@ -15,13 +15,13 @@ Client for the Uber Clone - ReactJS, Apollo, Typescript
 
     - [x] Home
     - [x] Edit Account / Verify again
+    - [x] Email Sign In
     - [x] Settings
     - [x] Places
     - [X] Add Place
     - [x] Find Address
     - [x] Delete Place
     - [x] Home detail
-    - [ ] Chat
+    - [x] Chat
     - [x] Ride
-    - [x] Challenge: Email Sign In
-    - [ ] Challenge: Ride History
+    - [ ] Ride History

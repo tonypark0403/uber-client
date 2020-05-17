@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '../Style/typed-components';
 
-// const Container = styled<any>('div')``; // { mine: boolean },
 const Container = styled<any>('div')`
   background-color: ${(props) =>
     props.mine ? props.theme.blueColor : props.theme.greyColor};
@@ -11,6 +10,7 @@ const Container = styled<any>('div')`
   align-self: ${(props) => (props.mine ? 'flex-end' : 'flex-start')};
   border-bottom-right-radius: ${(props) => (props.mine ? '0px' : '20px')};
   border-bottom-left-radius: ${(props) => (!props.mine ? '0px' : '20px')};
+  margin-bottom: 10px;
 `;
 
 interface IProps {

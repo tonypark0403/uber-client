@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { USER_PROFILE } from '../../sharedNotLocalQueries';
 import ChatPresenter from './ChatPresenter';
-import { GET_CHAT, SEND_MESSAGE } from './ChatQueries';
+import { GET_CHAT, SEND_MESSAGE, SUBSCRIBE_TO_MESSAGES } from './ChatQueries';
 import routes from '../../config/routes';
 import { useQuery, useMutation } from 'react-apollo';
+import { SubscribeToMoreOptions } from 'apollo-client';
 
 interface IProps extends RouteComponentProps<any> {}
 
@@ -21,7 +22,7 @@ const ChatContainer = (props: IProps) => {
   const [message, setMessage] = useState('');
 
   const { data: userData } = useQuery(USER_PROFILE);
-  const { data, loading } = useQuery(GET_CHAT, {
+  const { data, loading, subscribeToMore } = useQuery(GET_CHAT, {
     variables: { chatId: Number(chatId) },
   });
 
@@ -51,6 +52,42 @@ const ChatContainer = (props: IProps) => {
     }
     return;
   };
+
+  //subscription
+  const subscribeToMoreOptions: SubscribeToMoreOptions = {
+    document: SUBSCRIBE_TO_MESSAGES,
+    updateQuery: (prev, { subscriptionData }) => {
+      if (!subscriptionData.data) {
+        return prev;
+      }
+      const {
+        data: { MessageSubscription },
+      } = subscriptionData;
+      const {
+        GetChat: {
+          chat: { messages },
+        },
+      } = prev;
+      const newMessageId = MessageSubscription.id;
+      const latestMessageId = messages[messages.length - 1].id;
+
+      if (newMessageId === latestMessageId) {
+        return;
+      }
+      const newObject = Object.assign({}, prev, {
+        GetChat: {
+          ...prev.GetChat,
+          chat: {
+            ...prev.GetChat.chat,
+            messages: [...prev.GetChat.chat.messages, MessageSubscription],
+          },
+        },
+      });
+      return newObject;
+    },
+  };
+
+  subscribeToMore(subscribeToMoreOptions);
 
   return (
     <ChatPresenter
