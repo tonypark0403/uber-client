@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { graphql, Query, MutationFunction } from 'react-apollo';
+import { graphql, Query, MutationFunction, Mutation } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
 import { USER_PROFILE } from '../../sharedNotLocalQueries';
 import HomePresenter from './HomePresenter';
-import { geoCode } from '../../utils/mapHelpers';
+import { geoCode, reverseGeoCode } from '../../utils/mapHelpers';
 import { toast } from 'react-toastify';
 import {
   reportMovement,
   reportMovementVariables,
   getDrivers,
 } from '../../types/api';
-import { REPORT_LOCATION, GET_NEARBY_DRIVERS } from './HomeQueries';
+import {
+  REPORT_LOCATION,
+  GET_NEARBY_DRIVERS,
+  REQUEST_RIDE,
+} from './HomeQueries';
 
 interface IState {
   isMenuOpen: boolean;
@@ -23,6 +27,7 @@ interface IState {
   distance: string;
   duration?: string;
   price?: string;
+  fromAddress: string;
 }
 
 interface IProps extends RouteComponentProps<any> {
@@ -41,10 +46,11 @@ class HomeContainer extends React.Component<IProps, IState> {
   state = {
     distance: '',
     duration: undefined,
+    fromAddress: '',
     isMenuOpen: false,
     lat: 0,
     lng: 0,
-    price: undefined,
+    price: '',
     toAddress: '',
     toLat: 0,
     toLng: 0,
@@ -79,7 +85,17 @@ class HomeContainer extends React.Component<IProps, IState> {
       lat: latitude,
       lng: longitude,
     });
+    this.getFromAdress(latitude, longitude);
     this.loadMap(latitude, longitude);
+  };
+
+  private getFromAdress = async (lat: number, lng: number) => {
+    const address = await reverseGeoCode(lat, lng);
+    if (address) {
+      this.setState({
+        fromAddress: address,
+      });
+    }
   };
 
   private loadMap = (lat, lng) => {
@@ -304,7 +320,18 @@ class HomeContainer extends React.Component<IProps, IState> {
   };
 
   public render() {
-    const { isMenuOpen, toAddress, price } = this.state;
+    const {
+      isMenuOpen,
+      toAddress,
+      price,
+      distance,
+      fromAddress,
+      lat,
+      lng,
+      toLat,
+      toLng,
+      duration,
+    } = this.state;
 
     return (
       <Query query={USER_PROFILE}>
@@ -321,18 +348,36 @@ class HomeContainer extends React.Component<IProps, IState> {
             }
             onCompleted={this.handleNearByDrivers}>
             {() => (
-              <HomePresenter
-                loading={loading}
-                isMenuOpen={isMenuOpen}
-                toggleMenu={this.toggleMenu}
-                mapRef={this.mapRef}
-                toAddress={toAddress}
-                price={price}
-                data={data}
-                onInputChange={this.onInputChange}
-                onAddressSubmit={this.onAddressSubmit}
-                onKeyDown={this.onKeyDown}
-              />
+              <Mutation
+                mutation={REQUEST_RIDE}
+                variables={{
+                  distance,
+                  dropOffAddress: toAddress,
+                  dropOffLat: toLat,
+                  dropOffLng: toLng,
+                  duration: duration || '',
+                  pickUpAddress: fromAddress,
+                  pickUpLat: lat,
+                  pickUpLng: lng,
+                  price: parseFloat(price) || 0,
+                }}
+                onCompleted={(data) => console.log('request ride:', data)}>
+                {(requestRideFn) => (
+                  <HomePresenter
+                    loading={loading}
+                    isMenuOpen={isMenuOpen}
+                    toggleMenu={this.toggleMenu}
+                    mapRef={this.mapRef}
+                    toAddress={toAddress}
+                    price={price}
+                    data={data}
+                    onInputChange={this.onInputChange}
+                    onAddressSubmit={this.onAddressSubmit}
+                    onKeyDown={this.onKeyDown}
+                    requestRideFn={requestRideFn}
+                  />
+                )}
+              </Mutation>
             )}
           </Query>
         )}

@@ -6,6 +6,7 @@ import Menu from '../../Components/Menu';
 import AddressBar from '../../Components/AddressBar';
 import Button from '../../Components/Button';
 import { userProfile } from '../../types/api';
+import { MutationFunction } from 'react-apollo';
 
 const Container = styled.div``;
 
@@ -57,6 +58,7 @@ interface IProps {
   onAddressSubmit: () => void;
   onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  requestRideFn?: MutationFunction;
 }
 
 const HomePresenter: React.FC<IProps> = ({
@@ -70,6 +72,7 @@ const HomePresenter: React.FC<IProps> = ({
   onInputChange,
   onAddressSubmit,
   onKeyDown,
+  requestRideFn,
 }) => (
   <Container>
     <Helmet>
@@ -94,6 +97,7 @@ const HomePresenter: React.FC<IProps> = ({
             onChange={onInputChange}
             value={toAddress}
             onBlur={null}
+            onKeyDown={onKeyDown}
           />
           <ExtendedButton
             onClick={onAddressSubmit}
@@ -104,7 +108,7 @@ const HomePresenter: React.FC<IProps> = ({
       )}
       {price && (
         <RequestButton
-          onClick={onAddressSubmit}
+          onClick={requestRideFn}
           disabled={toAddress === ''}
           value={`Request Ride ($${price})`}
         />
