@@ -10,11 +10,15 @@ import {
   reportMovement,
   reportMovementVariables,
   getDrivers,
+  userProfile,
+  requestRide,
 } from '../../types/api';
 import {
   REPORT_LOCATION,
   GET_NEARBY_DRIVERS,
   REQUEST_RIDE,
+  GET_NEARBY_RIDE,
+  ACCEPT_RIDE,
 } from './HomeQueries';
 
 interface IState {
@@ -28,6 +32,7 @@ interface IState {
   duration?: string;
   price?: string;
   fromAddress: string;
+  isDriving: boolean;
 }
 
 interface IProps extends RouteComponentProps<any> {
@@ -48,6 +53,7 @@ class HomeContainer extends React.Component<IProps, IState> {
     duration: undefined,
     fromAddress: '',
     isMenuOpen: false,
+    isDriving: true,
     lat: 0,
     lng: 0,
     price: '',
@@ -319,6 +325,27 @@ class HomeContainer extends React.Component<IProps, IState> {
     }
   };
 
+  private handleRideRequest = (data: requestRide) => {
+    const { RequestRide } = data;
+    if (RequestRide.ok) {
+      toast.success('Drive requested, finding a driver');
+    } else {
+      toast.error(RequestRide.error);
+    }
+  };
+
+  private handleProfileQuery = (data: userProfile) => {
+    const { GetMyProfile } = data;
+    if (GetMyProfile.user) {
+      const {
+        user: { isDriving },
+      } = GetMyProfile;
+      this.setState({
+        isDriving,
+      });
+    }
+  };
+
   public render() {
     const {
       isMenuOpen,
@@ -331,25 +358,22 @@ class HomeContainer extends React.Component<IProps, IState> {
       toLat,
       toLng,
       duration,
+      isDriving,
     } = this.state;
 
     return (
-      <Query query={USER_PROFILE}>
+      <Query query={USER_PROFILE} onCompleted={this.handleProfileQuery}>
         {({ loading, data }) => (
           <Query
             query={GET_NEARBY_DRIVERS}
-            pollInterval={1000}
+            pollInterval={5000}
             fetchPolicy='cache-and-network'
-            skip={
-              data &&
-              data.GetMyProfile &&
-              data.GetMyProfile.user &&
-              data.GetMyProfile.user.isDriving
-            }
+            skip={isDriving}
             onCompleted={this.handleNearByDrivers}>
             {() => (
               <Mutation
                 mutation={REQUEST_RIDE}
+                onCompleted={this.handleRideRequest}
                 variables={{
                   distance,
                   dropOffAddress: toAddress,
@@ -360,22 +384,31 @@ class HomeContainer extends React.Component<IProps, IState> {
                   pickUpLat: lat,
                   pickUpLng: lng,
                   price: parseFloat(price) || 0,
-                }}
-                onCompleted={(data) => console.log('request ride:', data)}>
+                }}>
                 {(requestRideFn) => (
-                  <HomePresenter
-                    loading={loading}
-                    isMenuOpen={isMenuOpen}
-                    toggleMenu={this.toggleMenu}
-                    mapRef={this.mapRef}
-                    toAddress={toAddress}
-                    price={price}
-                    data={data}
-                    onInputChange={this.onInputChange}
-                    onAddressSubmit={this.onAddressSubmit}
-                    onKeyDown={this.onKeyDown}
-                    requestRideFn={requestRideFn}
-                  />
+                  <Query query={GET_NEARBY_RIDE} skip={!isDriving}>
+                    {({ data: nearbyRide }) => (
+                      <Mutation mutation={ACCEPT_RIDE}>
+                        {(acceptRideFn) => (
+                          <HomePresenter
+                            loading={loading}
+                            isMenuOpen={isMenuOpen}
+                            toggleMenu={this.toggleMenu}
+                            mapRef={this.mapRef}
+                            toAddress={toAddress}
+                            price={price}
+                            data={data}
+                            onInputChange={this.onInputChange}
+                            onAddressSubmit={this.onAddressSubmit}
+                            onKeyDown={this.onKeyDown}
+                            requestRideFn={requestRideFn}
+                            nearbyRide={nearbyRide}
+                            acceptRideFn={acceptRideFn}
+                          />
+                        )}
+                      </Mutation>
+                    )}
+                  </Query>
                 )}
               </Mutation>
             )}
