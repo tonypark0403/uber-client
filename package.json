@@ -47,6 +47,7 @@
     "@types/react-sidebar": "^3.0.0",
     "@types/react-toastify": "^4.1.0",
     "@types/styled-components": "^5.1.0",
+    "gh-pages": "^2.2.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2",
     "tslint": "^6.1.2",
@@ -55,13 +56,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "precodegen": "apollo schema:download --endpoint=http://localhost:4000/graphql",
     "codegen": "apollo codegen:generate src/types/api.d.ts --queries=src/**/*Queries.ts --addTypename --localSchemaFile=schema.json --target typescript --outputFlat",
     "lint": "tslint -p tsconfig.json -c ./tslint.json",
-    "format": "tslint-config-prettier-check ./tslint.json"
+    "format": "tslint-config-prettier-check ./tslint.json",
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "postbuild": "cd src && copy ./api/**/*.graphql ../dist/api"
   },
   "husky": {
     "hooks": {
@@ -88,5 +91,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "homepage": "https://tonypark0403.github.io/uber-client/"
 }
