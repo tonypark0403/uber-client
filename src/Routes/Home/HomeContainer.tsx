@@ -19,7 +19,9 @@ import {
   REQUEST_RIDE,
   GET_NEARBY_RIDE,
   ACCEPT_RIDE,
+  SUBSCRIBE_NEARBY_RIDES,
 } from './HomeQueries';
+import { SubscribeToMoreOptions } from 'apollo-client';
 
 interface IState {
   isMenuOpen: boolean;
@@ -346,6 +348,10 @@ class HomeContainer extends React.Component<IProps, IState> {
     }
   };
 
+  private handleSubscriptionUpdate = (data) => {
+    console.log(data);
+  };
+
   public render() {
     const {
       isMenuOpen,
@@ -387,27 +393,49 @@ class HomeContainer extends React.Component<IProps, IState> {
                 }}>
                 {(requestRideFn) => (
                   <Query query={GET_NEARBY_RIDE} skip={!isDriving}>
-                    {({ data: nearbyRide }) => (
-                      <Mutation mutation={ACCEPT_RIDE}>
-                        {(acceptRideFn) => (
-                          <HomePresenter
-                            loading={loading}
-                            isMenuOpen={isMenuOpen}
-                            toggleMenu={this.toggleMenu}
-                            mapRef={this.mapRef}
-                            toAddress={toAddress}
-                            price={price}
-                            data={data}
-                            onInputChange={this.onInputChange}
-                            onAddressSubmit={this.onAddressSubmit}
-                            onKeyDown={this.onKeyDown}
-                            requestRideFn={requestRideFn}
-                            nearbyRide={nearbyRide}
-                            acceptRideFn={acceptRideFn}
-                          />
-                        )}
-                      </Mutation>
-                    )}
+                    {({ subscribeToMore, data: nearbyRide }) => {
+                      const rideSubscriptionOptions: SubscribeToMoreOptions = {
+                        document: SUBSCRIBE_NEARBY_RIDES,
+                        updateQuery: (prev, { subscriptionData }) => {
+                          // console.log(prev, subscriptionData);
+                          if (!subscriptionData.data) {
+                            return prev;
+                          }
+                          const newObject = Object.assign({}, prev, {
+                            GetNearbyRide: {
+                              ...prev.GetNearbyRide,
+                              ride:
+                                subscriptionData.data.NearbyRideSubscription,
+                            },
+                          });
+                          return newObject;
+                        },
+                      };
+                      if (isDriving) {
+                        subscribeToMore(rideSubscriptionOptions);
+                      }
+                      return (
+                        <Mutation mutation={ACCEPT_RIDE}>
+                          {(acceptRideFn) => (
+                            <HomePresenter
+                              loading={loading}
+                              isMenuOpen={isMenuOpen}
+                              toggleMenu={this.toggleMenu}
+                              mapRef={this.mapRef}
+                              toAddress={toAddress}
+                              price={price}
+                              data={data}
+                              onInputChange={this.onInputChange}
+                              onAddressSubmit={this.onAddressSubmit}
+                              onKeyDown={this.onKeyDown}
+                              requestRideFn={requestRideFn}
+                              nearbyRide={nearbyRide}
+                              acceptRideFn={acceptRideFn}
+                            />
+                          )}
+                        </Mutation>
+                      );
+                    }}
                   </Query>
                 )}
               </Mutation>

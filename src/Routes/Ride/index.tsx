@@ -1,4 +1,2 @@
-import React, { FC } from 'react';
-
-const Ride: FC = () => <div>Ride</div>;
+import Ride from './RideContainer';
 export default Ride;
