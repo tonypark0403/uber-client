@@ -45,7 +45,7 @@ const LoggedInRoutes: React.FC = () => (
   <Switch>
     <Route path={routes.verifyEmail} component={VerifyEmail} />
     <Route path={routes.home} exact={true} component={Home} />
-    <Route path={routes.ride} exact={true} component={Ride} />
+    <Route path={routes.ride + '/:rideId'} exact={true} component={Ride} />
     <Route path={routes.editAccount} exact={true} component={EditAccount} />
     <Route path={routes.settings} exact={true} component={Settings} />
     <Route path={routes.places} exact={true} component={Places} />
