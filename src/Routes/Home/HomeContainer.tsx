@@ -12,6 +12,7 @@ import {
   getDrivers,
   userProfile,
   requestRide,
+  acceptRide,
 } from '../../types/api';
 import {
   REPORT_LOCATION,

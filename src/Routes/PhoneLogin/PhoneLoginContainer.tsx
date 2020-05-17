@@ -6,11 +6,6 @@ import { PHONE_SIGN_IN } from './PhoneLoginQueries';
 import { useMutation } from 'react-apollo';
 import routes from '../../config/routes';
 
-interface IState {
-  countryCode: string;
-  phoneNumber: string;
-}
-
 const PhoneLoginContainer = (props: RouteComponentProps<any>) => {
   const [countryCode, setCountryCode] = useState('+1');
   const [phoneNumber, setPhoneNumber] = useState('6479208877');
