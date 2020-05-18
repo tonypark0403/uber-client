@@ -167,6 +167,26 @@ export interface sendMessageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL subscription operation: messageSubscription
+// ====================================================
+
+export interface messageSubscription_MessageSubscription {
+  __typename: "Message";
+  id: number;
+  text: string;
+  userId: number | null;
+}
+
+export interface messageSubscription {
+  MessageSubscription: messageSubscription_MessageSubscription | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: updateProfile
 // ====================================================
 
@@ -264,6 +284,54 @@ export interface updatePassword {
 export interface updatePasswordVariables {
   email: string;
   password: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: historyRides
+// ====================================================
+
+export interface historyRides_HistoryRides_rides_driver {
+  __typename: "User";
+  id: number;
+  fullName: string | null;
+  profilePhoto: string | null;
+}
+
+export interface historyRides_HistoryRides_rides_passenger {
+  __typename: "User";
+  id: number;
+  fullName: string | null;
+  profilePhoto: string | null;
+}
+
+export interface historyRides_HistoryRides_rides {
+  __typename: "Ride";
+  id: number;
+  status: string;
+  pickUpAddress: string;
+  dropOffAddress: string;
+  price: number;
+  distance: string;
+  duration: string;
+  driver: historyRides_HistoryRides_rides_driver;
+  passenger: historyRides_HistoryRides_rides_passenger;
+  chatId: number | null;
+}
+
+export interface historyRides_HistoryRides {
+  __typename: "HistoryRidesResponse";
+  ok: boolean;
+  error: string | null;
+  rides: (historyRides_HistoryRides_rides | null)[] | null;
+}
+
+export interface historyRides {
+  HistoryRides: historyRides_HistoryRides;
 }
 
 /* tslint:disable */

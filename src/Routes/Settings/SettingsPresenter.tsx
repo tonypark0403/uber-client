@@ -90,6 +90,7 @@ const SettingsPresenter: React.FC<IProps> = ({
           />
         ))}
       <SLink to={routes.places}>Go to Places</SLink>
+      <SLink to={routes.history}>History</SLink>
       <FakeLink onClick={logUserOut}>Log Out</FakeLink>
     </Container>
   </React.Fragment>

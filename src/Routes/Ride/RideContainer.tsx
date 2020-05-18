@@ -31,6 +31,7 @@ const RideContainer = (props: IProps) => {
   }: QueryResult<getRide, Record<string, any>> = useQuery(GET_RIDE, {
     variables: { rideId: Number(rideId) },
   });
+
   const subscribeOptions: SubscribeToMoreOptions = {
     document: RIDE_SUBSCRIPTION,
     updateQuery: (prev, { subscriptionData }) => {
@@ -49,6 +50,9 @@ const RideContainer = (props: IProps) => {
   };
   subscribeToMore(subscribeOptions);
   const [updateRideFn] = useMutation(UPDATE_RIDE_STATUS);
+  if (!loading) {
+    console.log('data:', data);
+  }
   return (
     <RidePresenter
       userData={userData}

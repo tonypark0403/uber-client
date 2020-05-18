@@ -23,6 +23,7 @@ import {
   SUBSCRIBE_NEARBY_RIDES,
 } from './HomeQueries';
 import { SubscribeToMoreOptions } from 'apollo-client';
+import routes from '../../config/routes';
 
 interface IState {
   isMenuOpen: boolean;
@@ -67,6 +68,9 @@ class HomeContainer extends React.Component<IProps, IState> {
 
   constructor(props) {
     super(props);
+    if (props.location.state) {
+      this.state.toAddress = props.location.state.requestAddress;
+    }
     this.mapRef = React.createRef();
     this.drivers = [];
   }
@@ -333,7 +337,7 @@ class HomeContainer extends React.Component<IProps, IState> {
     const { RequestRide } = data;
     if (RequestRide.ok) {
       toast.success('Drive requested, finding a driver');
-      history.push(`/ride/${RequestRide.ride!.id}`);
+      history.push(`${routes.ride}/${RequestRide.ride!.id}`);
     } else {
       toast.error(RequestRide.error);
     }
@@ -355,7 +359,7 @@ class HomeContainer extends React.Component<IProps, IState> {
     const { history } = this.props;
     const { UpdateRideStatus } = data;
     if (UpdateRideStatus.ok) {
-      history.push(`/ride/${UpdateRideStatus.rideId}`);
+      history.push(`${routes.ride}/${UpdateRideStatus.rideId}`);
     }
   };
 

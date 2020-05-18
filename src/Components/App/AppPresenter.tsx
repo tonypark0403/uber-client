@@ -18,6 +18,7 @@ import EmailSignIn from '../../Routes/EmailSignIn';
 import ForgetPassword from '../../Routes/ForgetPassword';
 import VerifyEmail from '../../Routes/VerifyEmail';
 import Chat from '../../Routes/Chat';
+import History from '../../Routes/History';
 
 interface IProps {
   isLoggedIn: boolean;
@@ -51,6 +52,7 @@ const LoggedInRoutes: React.FC = () => (
     <Route path={routes.editAccount} exact={true} component={EditAccount} />
     <Route path={routes.settings} exact={true} component={Settings} />
     <Route path={routes.places} exact={true} component={Places} />
+    <Route path={routes.history} exact={true} component={History} />
     <Route path={routes.addPlace} exact={true} component={AddPlace} />
     <Route path={routes.findAddress} exact={true} component={FindAddress} />
     <Redirect from={'*'} to={'/'} />

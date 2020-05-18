@@ -24,4 +24,4 @@ Client for the Uber Clone - ReactJS, Apollo, Typescript
     - [x] Home detail
     - [x] Chat
     - [x] Ride
-    - [ ] Ride History
+    - [x] Ride History
