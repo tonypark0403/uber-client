@@ -61,10 +61,7 @@
     "precodegen": "apollo schema:download --endpoint=http://localhost:4000/graphql",
     "codegen": "apollo codegen:generate src/types/api.d.ts --queries=src/**/*Queries.ts --addTypename --localSchemaFile=schema.json --target typescript --outputFlat",
     "lint": "tslint -p tsconfig.json -c ./tslint.json",
-    "format": "tslint-config-prettier-check ./tslint.json",
-    "prebuild": "rm -rf dist",
-    "build": "tsc",
-    "postbuild": "cd src && copy ./api/**/*.graphql ../dist/api"
+    "format": "tslint-config-prettier-check ./tslint.json"
   },
   "husky": {
     "hooks": {

@@ -15,8 +15,7 @@
     "noEmit": true,
     "jsx": "react",
     "isolatedModules": true,
-    "strictPropertyInitialization": false,
-    "outDir": "dist"
+    "strictPropertyInitialization": false
   },
   "include": ["src"]
 }
