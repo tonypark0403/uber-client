@@ -1,6 +1,5 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
 import Header from '../../Components/Header';
 import styled from '../../Components/Style/typed-components';
 import { historyRides } from '../../types/api';
@@ -9,10 +8,6 @@ import Ride from '../../Components/Ride';
 
 const Container = styled.div`
   padding: 0 40px;
-`;
-
-const SLink = styled(Link)`
-  text-decoration: underline;
 `;
 
 interface IProps {
@@ -39,7 +34,7 @@ const PlacesPresenter: React.FC<IProps> = ({
       )}
       {rides &&
         rides.map((ride, index) => {
-          if (ride) {
+          if (ride && ride.driver) {
             return (
               <Ride
                 key={ride.id}

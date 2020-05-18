@@ -29,8 +29,9 @@ const authMiddleware = new ApolloLink((operation: Operation, forward: any) => {
   return forward(operation);
 });
 
+// console.log(`http://${config.SERVER}${config.GRAPHQL.GRAPHQL_ENDPOINT}`);
 const httpLink = new HttpLink({
-  uri: `http://localhost:4000${config.GRAPHQL.GRAPHQL_ENDPOINT}`,
+  uri: `https://${config.SERVER}${config.GRAPHQL.GRAPHQL_ENDPOINT}`,
 });
 
 const wsLink = new WebSocketLink({
@@ -40,7 +41,7 @@ const wsLink = new WebSocketLink({
     },
     reconnect: true,
   },
-  uri: `ws://localhost:4000${config.SUBSCRIPTION.SUBSCRIPTION_ENDPOINT}`,
+  uri: `ws://${config.SERVER}${config.SUBSCRIPTION.SUBSCRIPTION_ENDPOINT}`,
 });
 
 const combinedLinks = split(

@@ -318,7 +318,7 @@ export interface historyRides_HistoryRides_rides {
   price: number;
   distance: string;
   duration: string;
-  driver: historyRides_HistoryRides_rides_driver;
+  driver: historyRides_HistoryRides_rides_driver | null;
   passenger: historyRides_HistoryRides_rides_passenger;
   chatId: number | null;
 }
@@ -564,7 +564,7 @@ export interface getRide_GetRide_ride {
   price: number;
   distance: string;
   duration: string;
-  driver: getRide_GetRide_ride_driver;
+  driver: getRide_GetRide_ride_driver | null;
   passenger: getRide_GetRide_ride_passenger;
   chatId: number | null;
 }
@@ -616,7 +616,7 @@ export interface rideUpdates_RideStatusSubscription {
   price: number;
   distance: string;
   duration: string;
-  driver: rideUpdates_RideStatusSubscription_driver;
+  driver: rideUpdates_RideStatusSubscription_driver | null;
   passenger: rideUpdates_RideStatusSubscription_passenger;
   chatId: number | null;
 }
