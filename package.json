@@ -56,13 +56,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "precodegen": "apollo schema:download --endpoint=https://uber-srv.herokuapp.com/graphql",
     "codegen": "apollo codegen:generate src/types/api.d.ts --queries=src/**/*Queries.ts --addTypename --localSchemaFile=schema.json --target typescript --outputFlat",
     "lint": "tslint -p tsconfig.json -c ./tslint.json",
     "format": "tslint-config-prettier-check ./tslint.json",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d build"
   },
   "husky": {
     "hooks": {
