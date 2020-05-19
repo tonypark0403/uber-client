@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { geoCode, reverseGeoCode } from '../../utils/mapHelpers';
+import { geoCode, reverseGeoCode } from '../../Utils/mapHelpers';
 import FindAddressPresenter from './FindAddressPresenter';
 import { toast } from 'react-toastify';
 import { RouteComponentProps } from 'react-router-dom';

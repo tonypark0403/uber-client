@@ -4,7 +4,7 @@ import { graphql, Query, MutationFunction, Mutation } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
 import { USER_PROFILE } from '../../sharedNotLocalQueries';
 import HomePresenter from './HomePresenter';
-import { geoCode, reverseGeoCode } from '../../utils/mapHelpers';
+import { geoCode, reverseGeoCode } from '../../Utils/mapHelpers';
 import { toast } from 'react-toastify';
 import {
   reportMovement,
