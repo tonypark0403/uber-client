@@ -2,7 +2,7 @@ import dev from './dev';
 import prod from './prod';
 
 export interface Config {
-  PORT: string | number;
+  PORT: string;
   SERVER: string;
   GRAPHQL: {
     GRAPHQL_ENDPOINT: string;

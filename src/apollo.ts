@@ -29,7 +29,10 @@ const authMiddleware = new ApolloLink((operation: Operation, forward: any) => {
   return forward(operation);
 });
 
-// console.log(`http://${config.SERVER}${config.GRAPHQL.GRAPHQL_ENDPOINT}`);
+// tslint:disable-next-line:no-console
+console.log('endpoint', process.env.REACT_APP_GRAPHQL_ENDPOINT);
+// tslint:disable-next-line:no-console
+console.log('ws:', `http://${config.SERVER}${config.GRAPHQL.GRAPHQL_ENDPOINT}`);
 const httpLink = new HttpLink({
   uri: `https://${config.SERVER}${config.GRAPHQL.GRAPHQL_ENDPOINT}`,
 });
