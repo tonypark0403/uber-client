@@ -24,4 +24,5 @@ yarn-error.log*
 
 # lock
 *lock*
-config
+dev.ts
+.vercel
