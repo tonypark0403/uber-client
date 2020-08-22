@@ -37,6 +37,8 @@ const httpLink = new HttpLink({
   uri: `https://${config.SERVER}${config.GRAPHQL.GRAPHQL_ENDPOINT}`,
 });
 
+const protocol = process.env.NODE_ENV === 'production' ? 'wss' : 'ws';
+
 const wsLink = new WebSocketLink({
   options: {
     connectionParams: {
@@ -44,7 +46,7 @@ const wsLink = new WebSocketLink({
     },
     reconnect: true,
   },
-  uri: `ws://${config.SERVER}${config.SUBSCRIPTION.SUBSCRIPTION_ENDPOINT}`,
+  uri: `${protocol}://${config.SERVER}${config.SUBSCRIPTION.SUBSCRIPTION_ENDPOINT}`,
 });
 
 const combinedLinks = split(
