@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.js": "/uber-client/static/js/main.248d3c52.chunk.js",
+    "main.js.map": "/uber-client/static/js/main.248d3c52.chunk.js.map",
+    "runtime-main.js": "/uber-client/static/js/runtime-main.4a7e73c8.js",
+    "runtime-main.js.map": "/uber-client/static/js/runtime-main.4a7e73c8.js.map",
+    "static/css/2.e3b8ab9d.chunk.css": "/uber-client/static/css/2.e3b8ab9d.chunk.css",
+    "static/js/2.a277c6a0.chunk.js": "/uber-client/static/js/2.a277c6a0.chunk.js",
+    "static/js/2.a277c6a0.chunk.js.map": "/uber-client/static/js/2.a277c6a0.chunk.js.map",
+    "index.html": "/uber-client/index.html",
+    "precache-manifest.27a465e3f45a810bbcb3cddf0ab4ac03.js": "/uber-client/precache-manifest.27a465e3f45a810bbcb3cddf0ab4ac03.js",
+    "service-worker.js": "/uber-client/service-worker.js",
+    "static/css/2.e3b8ab9d.chunk.css.map": "/uber-client/static/css/2.e3b8ab9d.chunk.css.map",
+    "static/js/2.a277c6a0.chunk.js.LICENSE.txt": "/uber-client/static/js/2.a277c6a0.chunk.js.LICENSE.txt",
+    "static/media/bg.png": "/uber-client/static/media/bg.f1662d11.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4a7e73c8.js",
+    "static/css/2.e3b8ab9d.chunk.css",
+    "static/js/2.a277c6a0.chunk.js",
+    "static/js/main.248d3c52.chunk.js"
+  ]
+}
